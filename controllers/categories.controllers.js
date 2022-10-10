@@ -1,8 +1,8 @@
-const {
-  fetchCategories,
-  fetchUsers,
-  fetchReviewById,
-} = require("../models/categories.models");
+const { fetchCategories } = require("../models/categories.models");
+const { fetchReviewById } = require("../models/reviews.models");
+const { fetchUsers } = require("../models/users.models");
+
+// TODO: Separate the types of models and controllers into different files!
 
 exports.getCategories = (req, res, next) => {
   fetchCategories()
