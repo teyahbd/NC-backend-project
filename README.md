@@ -17,3 +17,5 @@ For the development database, create a similar file named `.env.development` wit
 ```
 PGDATABASE=nc_games
 ```
+
+These new `.env` files should be added to your `.gitignore` file.
