@@ -4,10 +4,12 @@ const {
   fetchReviewById,
 } = require("../models/categories.models");
 
-exports.getCategories = (req, res) => {
-  fetchCategories().then((categories) => {
-    res.status(200).send({ categories });
-  });
+exports.getCategories = (req, res, next) => {
+  fetchCategories()
+    .then((categories) => {
+      res.status(200).send({ categories });
+    })
+    .catch(next);
 };
 
 exports.getReviewById = (req, res, next) => {
@@ -18,8 +20,10 @@ exports.getReviewById = (req, res, next) => {
     .catch(next);
 };
 
-exports.getUsers = (req, res) => {
-  fetchUsers().then((users) => {
-    res.status(200).send({ users });
-  });
+exports.getUsers = (req, res, next) => {
+  fetchUsers()
+    .then((users) => {
+      res.status(200).send({ users });
+    })
+    .catch(next);
 };
