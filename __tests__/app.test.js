@@ -44,7 +44,6 @@ describe("app", () => {
               .get("/api/reviews/2")
               .expect(200)
               .then(({ body: { review } }) => {
-                console.log(review);
                 expect(review).toEqual(
                   expect.objectContaining({
                     review_id: 2,
@@ -60,6 +59,22 @@ describe("app", () => {
                 );
               });
           });
+          test("400: responds with error when passed an invalid id", () => {
+            return request(app)
+              .get("/api/reviews/notAnId")
+              .expect(400)
+              .then(({ body: { message } }) => {
+                expect(message).toBe("Bad request");
+              });
+          });
+          test("404: responds with error when passed id that does not exist", () => {
+            return request(app)
+              .get("/api/reviews/100")
+              .expect(404)
+              .then(({ body: { message } }) => {
+                expect(message).toBe("No review found with review id: 100");
+              });
+          });
         });
       });
     });
@@ -69,7 +84,7 @@ describe("app", () => {
           .get("/api/badroute")
           .expect(404)
           .then(({ body }) => {
-            expect(body.msg).toBe("Invalid route!");
+            expect(body.message).toBe("Invalid route");
           });
       });
     });

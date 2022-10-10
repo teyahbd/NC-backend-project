@@ -9,8 +9,10 @@ exports.getCategories = (req, res) => {
   });
 };
 
-exports.getReviewById = (req, res) => {
-  fetchReviewById(req.params.review_id).then((review) => {
-    res.status(200).send({ review });
-  });
+exports.getReviewById = (req, res, next) => {
+  fetchReviewById(req.params.review_id)
+    .then((review) => {
+      res.status(200).send({ review });
+    })
+    .catch(next);
 };
