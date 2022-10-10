@@ -1,7 +1,9 @@
-const db = require("../db/connection");
+const { fetchUsers } = require("../models/users.models");
 
-exports.fetchUsers = () => {
-  return db.query(`SELECT * FROM users`).then(({ rows: users }) => {
-    return users;
-  });
+exports.getUsers = (req, res, next) => {
+  fetchUsers()
+    .then((users) => {
+      res.status(200).send({ users });
+    })
+    .catch(next);
 };
