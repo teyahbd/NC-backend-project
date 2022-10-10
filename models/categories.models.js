@@ -19,3 +19,9 @@ exports.fetchReviewById = (review_id) => {
       return review;
     });
 };
+
+exports.fetchUsers = () => {
+  return db.query(`SELECT * FROM users`).then(({ rows: users }) => {
+    return users;
+  });
+};
