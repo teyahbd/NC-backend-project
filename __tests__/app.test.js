@@ -9,6 +9,10 @@ const {
   userData,
 } = require("../db/data/test-data");
 
+beforeEach(() => seed({ categoryData, commentData, reviewData, userData }));
+
+afterAll(() => db.end());
+
 describe("app", () => {
   describe("/api", () => {
     describe("/categories", () => {
