@@ -161,6 +161,32 @@ describe("app", () => {
                 expect(message).toBe("Bad request");
               });
           });
+          test("400: responds with error when passed an invalid id", () => {
+            const incReviewVotes = {
+              inc_votes: 1,
+            };
+
+            return request(app)
+              .patch("/api/reviews/notAnId")
+              .send(incReviewVotes)
+              .expect(400)
+              .then(({ body: { message } }) => {
+                expect(message).toBe("Bad request");
+              });
+          });
+          test("404: responds with error when passed id that does not exist", () => {
+            const incReviewVotes = {
+              inc_votes: 1,
+            };
+
+            return request(app)
+              .patch("/api/reviews/100")
+              .send(incReviewVotes)
+              .expect(404)
+              .then(({ body: { message } }) => {
+                expect(message).toBe("No review found with review id: 100");
+              });
+          });
         });
       });
     });
@@ -186,7 +212,7 @@ describe("app", () => {
         });
       });
     });
-    describe("Universal Error Handling", () => {
+    describe("Universal Error Handling ", () => {
       test("404: responds with error when passed a route that does not exist", () => {
         return request(app)
           .get("/api/badroute")

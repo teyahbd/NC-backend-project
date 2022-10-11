@@ -21,6 +21,12 @@ exports.updateReviewById = (review_id, inc_votes = "undefined") => {
       [inc_votes, review_id]
     )
     .then(({ rows: [review] }) => {
+      if (!review) {
+        return Promise.reject({
+          status: 404,
+          message: `No review found with review id: ${review_id}`,
+        });
+      }
       return review;
     });
 };
