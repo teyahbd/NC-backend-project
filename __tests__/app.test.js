@@ -57,7 +57,7 @@ describe("app", () => {
                     created_at: expect.any(String),
                   })
                 );
-                expect(review).toEqual({
+                expect(review).toMatchObject({
                   review_id: 2,
                   title: "Jenga",
                   designer: "Leslie Scott",
@@ -71,20 +71,24 @@ describe("app", () => {
                 });
               });
           });
-          test("400: responds with error when passed an invalid id", () => {
+          test("200: responds with review object of given review id with a comment count", () => {
             return request(app)
-              .get("/api/reviews/notAnId")
-              .expect(400)
-              .then(({ body: { message } }) => {
-                expect(message).toBe("Bad request");
-              });
-          });
-          test("404: responds with error when passed id that does not exist", () => {
-            return request(app)
-              .get("/api/reviews/100")
-              .expect(404)
-              .then(({ body: { message } }) => {
-                expect(message).toBe("No review found with review id: 100");
+              .get("/api/reviews/2")
+              .expect(200)
+              .then(({ body: { review } }) => {
+                expect(review).toEqual({
+                  review_id: 2,
+                  title: "Jenga",
+                  designer: "Leslie Scott",
+                  owner: "philippaclaire9",
+                  review_img_url:
+                    "https://www.golenbock.com/wp-content/uploads/2015/01/placeholder-user.png",
+                  review_body: "Fiddly fun for all the family",
+                  category: "dexterity",
+                  created_at: "2021-01-18T10:01:41.251Z",
+                  votes: 5,
+                  comment_count: 3,
+                });
               });
           });
         });
@@ -161,27 +165,19 @@ describe("app", () => {
                 expect(message).toBe("Bad request");
               });
           });
+        });
+        describe("General Errors", () => {
           test("400: responds with error when passed an invalid id", () => {
-            const incReviewVotes = {
-              inc_votes: 1,
-            };
-
             return request(app)
-              .patch("/api/reviews/notAnId")
-              .send(incReviewVotes)
+              .get("/api/reviews/notAnId")
               .expect(400)
               .then(({ body: { message } }) => {
                 expect(message).toBe("Bad request");
               });
           });
           test("404: responds with error when passed id that does not exist", () => {
-            const incReviewVotes = {
-              inc_votes: 1,
-            };
-
             return request(app)
-              .patch("/api/reviews/100")
-              .send(incReviewVotes)
+              .get("/api/reviews/100")
               .expect(404)
               .then(({ body: { message } }) => {
                 expect(message).toBe("No review found with review id: 100");

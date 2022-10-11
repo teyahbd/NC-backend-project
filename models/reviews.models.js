@@ -2,7 +2,10 @@ const db = require("../db/connection");
 
 exports.fetchReviewById = (review_id) => {
   return db
-    .query(`SELECT * FROM reviews WHERE review_id=$1`, [review_id])
+    .query(
+      `SELECT reviews.*, (SELECT COUNT(*)::int FROM comments WHERE review_id=$1) AS comment_count FROM reviews WHERE review_id=$1;`,
+      [review_id]
+    )
     .then(({ rows: [review] }) => {
       if (!review) {
         return Promise.reject({
