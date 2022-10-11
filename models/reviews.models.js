@@ -30,3 +30,17 @@ exports.updateReviewById = (review_id, inc_votes = "undefined") => {
       return review;
     });
 };
+
+exports.fetchReviews = () => {
+  return db
+    .query(
+      `SELECT reviews.*, COALESCE(count_table.comment_count, 0) as comment_count
+      FROM reviews
+      LEFT JOIN (SELECT review_id, COUNT(review_id)::int as comment_count
+      FROM comments
+      GROUP BY review_id) count_table ON reviews.review_id = count_table.review_id;`
+    )
+    .then(({ rows: reviews }) => {
+      return reviews;
+    });
+};

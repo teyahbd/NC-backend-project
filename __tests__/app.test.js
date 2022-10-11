@@ -37,6 +37,33 @@ describe("app", () => {
       });
     });
     describe("/reviews", () => {
+      describe("GET: /api/reviews", () => {
+        test("200: responds with an array of review objects", () => {
+          return request(app)
+            .get("/api/reviews")
+            .expect(200)
+            .then(({ body: reviews }) => {
+              expect(reviews).toHaveLength(13);
+
+              reviews.forEach((review) => {
+                expect(review).toEqual(
+                  expect.objectContaining({
+                    owner: expect.any(String),
+                    title: expect.any(String),
+                    review_id: expect.any(Number),
+                    category: expect.any(String),
+                    review_img_url: expect.any(String),
+                    created_at: expect.any(String),
+                    votes: expect.any(Number),
+                    designer: expect.any(String),
+                    comment_count: expect.any(Number),
+                  })
+                );
+              });
+            });
+        });
+        //test("200: responds with an array of review objects sorted by date in descending order", () => {});
+      });
       describe("/:review_id", () => {
         describe("GET: /api/reviews/:review_id", () => {
           test("200: responds with a review object that has given review id", () => {
