@@ -137,6 +137,17 @@ describe("app", () => {
                 });
               });
           });
+          test("400: responds with error when body is missing required fields", () => {
+            const badBody = {};
+
+            return request(app)
+              .patch("/api/reviews/1")
+              .send(badBody)
+              .expect(400)
+              .then(({ body: { message } }) => {
+                expect(message).toBe("Bad request");
+              });
+          });
         });
       });
     });

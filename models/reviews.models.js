@@ -14,8 +14,7 @@ exports.fetchReviewById = (review_id) => {
     });
 };
 
-exports.updateReviewById = (review_id, reviewUpdate) => {
-  const { inc_votes } = reviewUpdate;
+exports.updateReviewById = (review_id, inc_votes = "undefined") => {
   return db
     .query(
       `UPDATE reviews SET votes= votes + $1 WHERE review_id=$2 RETURNING *;`,

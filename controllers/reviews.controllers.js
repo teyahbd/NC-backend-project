@@ -12,7 +12,7 @@ exports.getReviewById = (req, res, next) => {
 };
 
 exports.patchReviewById = (req, res, next) => {
-  updateReviewById(req.params.review_id, req.body)
+  updateReviewById(req.params.review_id, req.body.inc_votes)
     .then((review) => {
       res.status(200).send({ review });
     })

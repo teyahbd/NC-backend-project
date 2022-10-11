@@ -5,7 +5,7 @@ exports.handlePSQLErrors = (err, req, res, next) => {
 };
 
 exports.handleCustomErrors = (err, req, res, next) => {
-  if (err.status && err.message) {
+  if (err.status) {
     res.status(err.status).send({ message: err.message });
   } else next(err);
 };
