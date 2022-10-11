@@ -3,6 +3,11 @@ const express = require("express");
 const { getCategories } = require("./controllers/categories.controllers");
 const { getReviewById } = require("./controllers/reviews.controllers");
 const { getUsers } = require("./controllers/users.controllers");
+const {
+  handlePSQLErrors,
+  handleCustomErrors,
+  handleInternalErrors,
+} = require("./controllers/errors.controllers");
 
 const app = express();
 
@@ -16,20 +21,10 @@ app.all("*", (req, res) => {
   res.status(404).send({ message: "Invalid route" });
 });
 
-app.use((err, req, res, next) => {
-  if (err.code === "22P02") {
-    res.status(400).send({ message: "Bad request" });
-  } else next(err);
-});
+app.use(handlePSQLErrors);
 
-app.use((err, req, res, next) => {
-  if (err.status && err.message) {
-    res.status(err.status).send({ message: err.message });
-  } else next(err);
-});
+app.use(handleCustomErrors);
 
-app.use((err, req, res, next) => {
-  res.status(500).send({ message: "Server error" });
-});
+app.use(handleInternalErrors);
 
 module.exports = app;
