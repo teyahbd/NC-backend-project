@@ -108,6 +108,106 @@ describe("app", () => {
               });
           });
         });
+        describe("PATCH: /api/reviews/:review_id", () => {
+          test("200: responds with updated review object when vote increased", () => {
+            const incReviewVotes = {
+              inc_votes: 1,
+            };
+
+            return request(app)
+              .patch("/api/reviews/1")
+              .send(incReviewVotes)
+              .expect(200)
+              .then(({ body: { review } }) => {
+                expect(review).toEqual({
+                  review_id: 1,
+                  title: "Agricola",
+                  designer: "Uwe Rosenberg",
+                  owner: "mallionaire",
+                  review_img_url:
+                    "https://www.golenbock.com/wp-content/uploads/2015/01/placeholder-user.png",
+                  review_body: "Farmyard fun!",
+                  category: "euro game",
+                  created_at: "2021-01-18T10:00:20.514Z",
+                  votes: 2,
+                });
+              });
+          });
+          test("200: responds with updated review object when vote decreased", () => {
+            const decReviewVotes = {
+              inc_votes: -3,
+            };
+
+            return request(app)
+              .patch("/api/reviews/2")
+              .send(decReviewVotes)
+              .expect(200)
+              .then(({ body: { review } }) => {
+                expect(review).toEqual({
+                  review_id: 2,
+                  title: "Jenga",
+                  designer: "Leslie Scott",
+                  owner: "philippaclaire9",
+                  review_img_url:
+                    "https://www.golenbock.com/wp-content/uploads/2015/01/placeholder-user.png",
+                  review_body: "Fiddly fun for all the family",
+                  category: "dexterity",
+                  created_at: "2021-01-18T10:01:41.251Z",
+                  votes: 2,
+                });
+              });
+          });
+          test("400: responds with error when body is missing required fields", () => {
+            const badBody = {};
+
+            return request(app)
+              .patch("/api/reviews/1")
+              .send(badBody)
+              .expect(400)
+              .then(({ body: { message } }) => {
+                expect(message).toBe("Bad request");
+              });
+          });
+          test("400: responds with error when passed key value of wrong type", () => {
+            const badBody = {
+              inc_votes: "one vote",
+            };
+
+            return request(app)
+              .patch("/api/reviews/1")
+              .send(badBody)
+              .expect(400)
+              .then(({ body: { message } }) => {
+                expect(message).toBe("Bad request");
+              });
+          });
+          test("400: responds with error when passed an invalid id", () => {
+            const incReviewVotes = {
+              inc_votes: 1,
+            };
+
+            return request(app)
+              .patch("/api/reviews/notAnId")
+              .send(incReviewVotes)
+              .expect(400)
+              .then(({ body: { message } }) => {
+                expect(message).toBe("Bad request");
+              });
+          });
+          test("404: responds with error when passed id that does not exist", () => {
+            const incReviewVotes = {
+              inc_votes: 1,
+            };
+
+            return request(app)
+              .patch("/api/reviews/100")
+              .send(incReviewVotes)
+              .expect(404)
+              .then(({ body: { message } }) => {
+                expect(message).toBe("No review found with review id: 100");
+              });
+          });
+        });
       });
     });
     describe("/users", () => {
@@ -132,7 +232,7 @@ describe("app", () => {
         });
       });
     });
-    describe("Universal Error Handling", () => {
+    describe("Universal Error Handling ", () => {
       test("404: responds with error when passed a route that does not exist", () => {
         return request(app)
           .get("/api/badroute")
