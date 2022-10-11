@@ -91,22 +91,6 @@ describe("app", () => {
                 });
               });
           });
-          test("400: responds with error when passed an invalid id", () => {
-            return request(app)
-              .get("/api/reviews/notAnId")
-              .expect(400)
-              .then(({ body: { message } }) => {
-                expect(message).toBe("Bad request");
-              });
-          });
-          test("404: responds with error when passed id that does not exist", () => {
-            return request(app)
-              .get("/api/reviews/100")
-              .expect(404)
-              .then(({ body: { message } }) => {
-                expect(message).toBe("No review found with review id: 100");
-              });
-          });
         });
         describe("PATCH: /api/reviews/:review_id", () => {
           test("200: responds with updated review object when vote increased", () => {
@@ -181,27 +165,19 @@ describe("app", () => {
                 expect(message).toBe("Bad request");
               });
           });
+        });
+        describe("General Errors", () => {
           test("400: responds with error when passed an invalid id", () => {
-            const incReviewVotes = {
-              inc_votes: 1,
-            };
-
             return request(app)
-              .patch("/api/reviews/notAnId")
-              .send(incReviewVotes)
+              .get("/api/reviews/notAnId")
               .expect(400)
               .then(({ body: { message } }) => {
                 expect(message).toBe("Bad request");
               });
           });
           test("404: responds with error when passed id that does not exist", () => {
-            const incReviewVotes = {
-              inc_votes: 1,
-            };
-
             return request(app)
-              .patch("/api/reviews/100")
-              .send(incReviewVotes)
+              .get("/api/reviews/100")
               .expect(404)
               .then(({ body: { message } }) => {
                 expect(message).toBe("No review found with review id: 100");
