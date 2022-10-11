@@ -62,7 +62,14 @@ describe("app", () => {
               });
             });
         });
-        //test("200: responds with an array of review objects sorted by date in descending order", () => {});
+        /*
+        test("200: responds with an array of review objects sorted by date in descending order", () => {
+          return request(app)
+            .get("/api/reviews")
+            .expect(200)
+            .then(({ body: reviews }) => {});
+        });
+        */
       });
       describe("/:review_id", () => {
         describe("GET: /api/reviews/:review_id", () => {
