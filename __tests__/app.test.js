@@ -148,6 +148,19 @@ describe("app", () => {
                 expect(message).toBe("Bad request");
               });
           });
+          test("400: responds with error when passed key value of wrong type", () => {
+            const badBody = {
+              inc_votes: "one vote",
+            };
+
+            return request(app)
+              .patch("/api/reviews/1")
+              .send(badBody)
+              .expect(400)
+              .then(({ body: { message } }) => {
+                expect(message).toBe("Bad request");
+              });
+          });
         });
       });
     });
