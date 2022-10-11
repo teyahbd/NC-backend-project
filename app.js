@@ -1,35 +1,34 @@
 const express = require("express");
 
 const { getCategories } = require("./controllers/categories.controllers");
-const { getReviewById } = require("./controllers/reviews.controllers");
+const {
+  getReviewById,
+  patchReviewById,
+} = require("./controllers/reviews.controllers");
 const { getUsers } = require("./controllers/users.controllers");
+const {
+  handlePSQLErrors,
+  handleCustomErrors,
+  handleInternalErrors,
+  handleInvalidRouteErrors,
+} = require("./controllers/errors.controllers");
 
 const app = express();
 
+app.use(express.json());
+
 app.get("/api/categories", getCategories);
-
 app.get("/api/users", getUsers);
-
 app.get("/api/reviews/:review_id", getReviewById);
 
-app.all("*", (req, res) => {
-  res.status(404).send({ message: "Invalid route" });
-});
+app.patch("/api/reviews/:review_id", patchReviewById);
 
-app.use((err, req, res, next) => {
-  if (err.code === "22P02") {
-    res.status(400).send({ message: "Bad request" });
-  } else next(err);
-});
+app.all("*", handleInvalidRouteErrors);
 
-app.use((err, req, res, next) => {
-  if (err.status && err.message) {
-    res.status(err.status).send({ message: err.message });
-  } else next(err);
-});
+app.use(handlePSQLErrors);
 
-app.use((err, req, res, next) => {
-  res.status(500).send({ message: "Server error" });
-});
+app.use(handleCustomErrors);
+
+app.use(handleInternalErrors);
 
 module.exports = app;
