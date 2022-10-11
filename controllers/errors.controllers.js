@@ -13,3 +13,7 @@ exports.handleCustomErrors = (err, req, res, next) => {
 exports.handleInternalErrors = (err, req, res, next) => {
   res.status(500).send({ message: "Server error" });
 };
+
+exports.handleInvalidRouteErrors = (req, res) => {
+  res.status(404).send({ message: "Invalid route" });
+};
