@@ -34,16 +34,27 @@ exports.updateReviewById = (review_id, inc_votes = "undefined") => {
     });
 };
 
-exports.fetchReviews = (queryObj) => {
+exports.fetchReviews = (category) => {
+  const validCategoryValues = [
+    "euro_game",
+    "social_deduction",
+    "dexterity",
+    "childrens_games",
+  ];
+
+  if (!validCategoryValues.includes(category) && category !== undefined) {
+    return Promise.reject({ status: 400, message: "Invalid category" });
+  }
+
   let queryStr = `SELECT reviews.*, COALESCE(count_table.comment_count, 0) as comment_count
   FROM reviews
   LEFT JOIN (SELECT review_id, COUNT(review_id)::int as comment_count
   FROM comments
   GROUP BY review_id) count_table ON reviews.review_id = count_table.review_id`;
 
-  if (queryObj.category) {
+  if (category) {
     //sql injection??????
-    queryStr += ` WHERE reviews.category='${queryObj.category}'`;
+    queryStr += ` WHERE reviews.category='${category}'`;
   }
 
   queryStr += ` ORDER BY reviews.created_at DESC;`;

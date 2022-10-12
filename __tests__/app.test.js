@@ -38,7 +38,7 @@ describe("app", () => {
     });
     describe("/reviews", () => {
       describe("GET: /api/reviews", () => {
-        test("200: responds with an array of review objects", () => {
+        test("200: responds with an array of review objects when not passed query", () => {
           return request(app)
             .get("/api/reviews")
             .expect(200)
@@ -62,7 +62,7 @@ describe("app", () => {
               });
             });
         });
-        test("200: responds with an array of review objects sorted by date in descending order", () => {
+        test("200: responds with an array of review objects sorted by date in descending order when not passed query", () => {
           //Check this... sorting the array you've received feels wrong e.g. if missed something!
           // But then you have checked the array length....
           return request(app)
@@ -121,6 +121,14 @@ describe("app", () => {
             .expect(200)
             .then(({ body: reviews }) => {
               expect(reviews).toHaveLength(0);
+            });
+        });
+        test("400: returns error message when passed invalid category query value", () => {
+          return request(app)
+            .get("/api/reviews?category=not_a_category")
+            .expect(400)
+            .then(({ body: { message } }) => {
+              expect(message).toBe("Invalid category");
             });
         });
       });
