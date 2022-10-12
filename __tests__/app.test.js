@@ -115,6 +115,14 @@ describe("app", () => {
               ]);
             });
         });
+        test("200: returns empty array when passed category that exists but has no associated reviews", () => {
+          return request(app)
+            .get("/api/reviews?category=childrens_games")
+            .expect(200)
+            .then(({ body: reviews }) => {
+              expect(reviews).toHaveLength(0);
+            });
+        });
       });
       describe("/:review_id", () => {
         describe("GET: /api/reviews/:review_id", () => {
