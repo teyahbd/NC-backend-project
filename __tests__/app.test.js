@@ -166,6 +166,31 @@ describe("app", () => {
               });
           });
         });
+        describe("/comments", () => {
+          describe("GET: /api/reviews/:review_id/comments", () => {
+            test("200: responds with an array of comment objects", () => {
+              return request(app)
+                .get("/api/reviews/2/comments")
+                .expect(200)
+                .then(({ body: { comments } }) => {
+                  comments.forEach((comment) => {
+                    expect(comment).toEqual(
+                      expect.objectContaining({
+                        comment_id: expect.any(Number),
+                        votes: expect.any(Number),
+                        created_at: expect.any(String),
+                        author: expect.any(String),
+                        body: expect.any(String),
+                        review_id: 2,
+                      })
+                    );
+                  });
+                });
+            });
+            //test("200: responds with an array of comment objects with most recent first")
+            //test("200: empty array where review exists but no comments")
+          });
+        });
         describe("General Errors", () => {
           test("400: responds with error when passed an invalid id", () => {
             return request(app)
