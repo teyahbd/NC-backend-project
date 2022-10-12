@@ -36,7 +36,10 @@ exports.updateReviewById = (review_id, inc_votes = "undefined") => {
 
 exports.fetchCommentsByReviewId = (review_id) => {
   return db
-    .query(`SELECT * FROM comments WHERE review_id=$1`, [review_id])
+    .query(
+      `SELECT * FROM comments WHERE review_id=$1 ORDER BY created_at DESC`,
+      [review_id]
+    )
     .then(({ rows: comments }) => {
       return comments;
     });

@@ -173,6 +173,8 @@ describe("app", () => {
                 .get("/api/reviews/2/comments")
                 .expect(200)
                 .then(({ body: { comments } }) => {
+                  expect(comments).toHaveLength(3);
+
                   comments.forEach((comment) => {
                     expect(comment).toEqual(
                       expect.objectContaining({
@@ -187,7 +189,33 @@ describe("app", () => {
                   });
                 });
             });
-            //test("200: responds with an array of comment objects with most recent first")
+            test("200: responds with an array of comment objects with most recent first", () => {
+              return request(app)
+                .get("/api/reviews/3/comments")
+                .expect(200)
+                .then(({ body: { comments } }) => {
+                  expect(comments).toHaveLength(3);
+
+                  const sortedComments = comments.map((comment) => {
+                    return { ...comment };
+                  });
+
+                  function compareDates(a, b) {
+                    if (a.created_at > b.created_at) {
+                      return -1;
+                    }
+                    if (a.created_at < b.created_at) {
+                      return 1;
+                    }
+                    return 0;
+                  }
+
+                  sortedComments.sort(compareDates);
+                  console.log(sortedComments);
+
+                  expect(comments).toStrictEqual(sortedComments);
+                });
+            });
             //test("200: empty array where review exists but no comments")
           });
         });
