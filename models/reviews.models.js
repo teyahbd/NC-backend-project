@@ -34,17 +34,21 @@ exports.updateReviewById = (review_id, inc_votes = "undefined") => {
     });
 };
 
-exports.fetchReviews = () => {
-  return db
-    .query(
-      `SELECT reviews.*, COALESCE(count_table.comment_count, 0) as comment_count
-      FROM reviews
-      LEFT JOIN (SELECT review_id, COUNT(review_id)::int as comment_count
-      FROM comments
-      GROUP BY review_id) count_table ON reviews.review_id = count_table.review_id
-      ORDER BY reviews.created_at DESC;`
-    )
-    .then(({ rows: reviews }) => {
-      return reviews;
-    });
+exports.fetchReviews = (queryObj) => {
+  let queryStr = `SELECT reviews.*, COALESCE(count_table.comment_count, 0) as comment_count
+  FROM reviews
+  LEFT JOIN (SELECT review_id, COUNT(review_id)::int as comment_count
+  FROM comments
+  GROUP BY review_id) count_table ON reviews.review_id = count_table.review_id`;
+
+  if (queryObj.category) {
+    //sql injection??????
+    queryStr += ` WHERE reviews.category='${queryObj.category}'`;
+  }
+
+  queryStr += ` ORDER BY reviews.created_at DESC;`;
+
+  return db.query(queryStr).then(({ rows: reviews }) => {
+    return reviews;
+  });
 };

@@ -63,6 +63,8 @@ describe("app", () => {
             });
         });
         test("200: responds with an array of review objects sorted by date in descending order", () => {
+          //Check this... sorting the array you've received feels wrong e.g. if missed something!
+          // But then you have checked the array length....
           return request(app)
             .get("/api/reviews")
             .expect(200)
@@ -86,6 +88,31 @@ describe("app", () => {
               sortedReviews.sort(compareDates);
 
               expect(reviews).toStrictEqual(sortedReviews);
+            });
+        });
+        test("200: accepts category query of dexterity", () => {
+          // test more?
+          return request(app)
+            .get("/api/reviews?category=dexterity")
+            .expect(200)
+            .then(({ body: reviews }) => {
+              expect(reviews).toHaveLength(1);
+
+              expect(reviews).toEqual([
+                {
+                  review_id: 2,
+                  title: "Jenga",
+                  designer: "Leslie Scott",
+                  owner: "philippaclaire9",
+                  review_img_url:
+                    "https://www.golenbock.com/wp-content/uploads/2015/01/placeholder-user.png",
+                  review_body: "Fiddly fun for all the family",
+                  category: "dexterity",
+                  created_at: "2021-01-18T10:01:41.251Z",
+                  votes: 5,
+                  comment_count: 3,
+                },
+              ]);
             });
         });
       });

@@ -21,7 +21,7 @@ exports.patchReviewById = (req, res, next) => {
 };
 
 exports.getReviews = (req, res, next) => {
-  fetchReviews()
+  fetchReviews(req.query)
     .then((reviews) => {
       res.status(200).send(reviews);
     })
