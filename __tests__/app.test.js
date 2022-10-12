@@ -63,8 +63,6 @@ describe("app", () => {
             });
         });
         test("200: responds with an array of review objects sorted by date in descending order when not passed query", () => {
-          //Check this... sorting the array you've received feels wrong e.g. if missed something!
-          // But then you have checked the array length....
           return request(app)
             .get("/api/reviews")
             .expect(200)
@@ -91,7 +89,6 @@ describe("app", () => {
             });
         });
         test("200: accepts category query of dexterity", () => {
-          // test more?
           return request(app)
             .get("/api/reviews?category=dexterity")
             .expect(200)
