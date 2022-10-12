@@ -41,7 +41,8 @@ exports.fetchReviews = () => {
       FROM reviews
       LEFT JOIN (SELECT review_id, COUNT(review_id)::int as comment_count
       FROM comments
-      GROUP BY review_id) count_table ON reviews.review_id = count_table.review_id;`
+      GROUP BY review_id) count_table ON reviews.review_id = count_table.review_id
+      ORDER BY reviews.created_at DESC;`
     )
     .then(({ rows: reviews }) => {
       return reviews;

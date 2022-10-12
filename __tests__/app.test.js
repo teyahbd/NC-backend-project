@@ -62,14 +62,32 @@ describe("app", () => {
               });
             });
         });
-        /*
         test("200: responds with an array of review objects sorted by date in descending order", () => {
           return request(app)
             .get("/api/reviews")
             .expect(200)
-            .then(({ body: reviews }) => {});
+            .then(({ body: reviews }) => {
+              expect(reviews).toHaveLength(13);
+
+              const sortedReviews = reviews.map((review) => {
+                return { ...review };
+              });
+
+              function compareDates(a, b) {
+                if (a.created_at > b.created_at) {
+                  return -1;
+                }
+                if (a.created_at < b.created_at) {
+                  return 1;
+                }
+                return 0;
+              }
+
+              sortedReviews.sort(compareDates);
+
+              expect(reviews).toStrictEqual(sortedReviews);
+            });
         });
-        */
       });
       describe("/:review_id", () => {
         describe("GET: /api/reviews/:review_id", () => {
