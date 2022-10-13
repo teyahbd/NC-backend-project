@@ -333,14 +333,6 @@ describe("app", () => {
                   expect(message).toBe("No review found with review id: 100");
                 });
             });
-            test("404: responds with error when passed route that does not exist", () => {
-              return request(app)
-                .get("/api/reviews/1/comment")
-                .expect(404)
-                .then(({ body: { message } }) => {
-                  expect(message).toBe("Invalid route");
-                });
-            });
           });
         });
         describe("General Errors", () => {

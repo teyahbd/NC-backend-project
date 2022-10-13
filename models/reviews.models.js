@@ -41,12 +41,6 @@ exports.fetchCommentsByReviewId = (review_id) => {
       [review_id]
     )
     .then(({ rows: comments }) => {
-      if (!comments) {
-        return Promise.reject({
-          status: 404,
-          message: `No review found with review id: ${review_id}`,
-        });
-      }
       return comments;
     });
 };
