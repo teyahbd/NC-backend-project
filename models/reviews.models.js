@@ -83,12 +83,6 @@ exports.addComment = (review_id, reqBody) => {
       [body, review_id, username]
     )
     .then(({ rows: [comment] }) => {
-      if (!comment) {
-        return Promise.reject({
-          status: 404,
-          message: "Review not found",
-        });
-      }
       return comment;
     });
 };

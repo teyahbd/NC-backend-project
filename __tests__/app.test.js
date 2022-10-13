@@ -431,20 +431,6 @@ describe("app", () => {
                     expect(message).toBe("Not found");
                   });
               });
-              test("404: responds with error when passed route that does not exist", () => {
-                const commentToPost = {
-                  username: "mallionaire",
-                  body: "I love this game!",
-                };
-
-                return request(app)
-                  .post("/api/reviews/1/comment")
-                  .send(commentToPost)
-                  .expect(404)
-                  .then(({ body: { message } }) => {
-                    expect(message).toBe("Invalid route");
-                  });
-              });
             });
           });
         });
