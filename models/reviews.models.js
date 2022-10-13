@@ -49,7 +49,6 @@ exports.fetchReviews = (category) => {
   LEFT JOIN comments ON reviews.review_id=comments.review_id`;
 
   if (category) {
-    console.log(category);
     if (!validCategoryValues.includes(category)) {
       return Promise.reject({ status: 400, message: "Invalid category" });
     }
@@ -63,4 +62,17 @@ exports.fetchReviews = (category) => {
   return db.query(queryStr, queryValues).then(({ rows: reviews }) => {
     return reviews;
   });
+};
+
+exports.addComment = (review_id, reqBody) => {
+  const { username, body } = reqBody;
+
+  return db
+    .query(
+      `INSERT INTO comments (body, review_id, author) VALUES ($1, $2, $3) RETURNING *`,
+      [body, review_id, username]
+    )
+    .then(({ rows: [comment] }) => {
+      return comment;
+    });
 };

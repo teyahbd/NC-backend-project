@@ -258,6 +258,7 @@ describe("app", () => {
               });
           });
         });
+
         describe("General Errors", () => {
           test("400: responds with error when passed an invalid id", () => {
             return request(app)
@@ -274,6 +275,31 @@ describe("app", () => {
               .then(({ body: { message } }) => {
                 expect(message).toBe("No review found with review id: 100");
               });
+          });
+        });
+        describe("/comments", () => {
+          // existing users only can make comments
+          describe("PATCH: /api/reviews/:review_id/comments", () => {
+            test("201: responds with comment object that has been added to database", () => {
+              const commentToPost = {
+                username: "mallionaire",
+                body: "I love this game!",
+              };
+              return request(app)
+                .post("/api/reviews/1/comments")
+                .send(commentToPost)
+                .expect(201)
+                .then(({ body: { comment } }) => {
+                  expect(comment).toEqual({
+                    comment_id: 7,
+                    author: "mallionaire",
+                    body: "I love this game!",
+                    votes: 0,
+                    review_id: 1,
+                    created_at: expect.any(String),
+                  });
+                });
+            });
           });
         });
       });
