@@ -10,7 +10,7 @@ exports.fetchReviewById = (review_id) => {
       if (!review) {
         return Promise.reject({
           status: 404,
-          message: `No review found with review id: ${review_id}`,
+          message: "Review does not exist",
         });
       }
       return review;
@@ -27,7 +27,7 @@ exports.updateReviewById = (review_id, inc_votes = "undefined") => {
       if (!review) {
         return Promise.reject({
           status: 404,
-          message: `No review found with review id: ${review_id}`,
+          message: "Review does not exist",
         });
       }
       return review;
@@ -73,6 +73,12 @@ exports.addComment = (review_id, reqBody) => {
       [body, review_id, username]
     )
     .then(({ rows: [comment] }) => {
+      if (!comment) {
+        return Promise.reject({
+          status: 404,
+          message: "Review does not exist",
+        });
+      }
       return comment;
     });
 };

@@ -273,7 +273,7 @@ describe("app", () => {
               .get("/api/reviews/100")
               .expect(404)
               .then(({ body: { message } }) => {
-                expect(message).toBe("No review found with review id: 100");
+                expect(message).toBe("Review does not exist");
               });
           });
         });
@@ -299,6 +299,36 @@ describe("app", () => {
                     created_at: expect.any(String),
                   });
                 });
+            });
+            describe("Error Handling", () => {
+              test("400: responds with error when passed an invalid id", () => {
+                const commentToPost = {
+                  username: "mallionaire",
+                  body: "I love this game!",
+                };
+
+                return request(app)
+                  .post("/api/reviews/notAnId/comments")
+                  .send(commentToPost)
+                  .expect(400)
+                  .then(({ body: { message } }) => {
+                    expect(message).toBe("Bad request");
+                  });
+              });
+              test("404: responds with error when passed id that does not exist", () => {
+                const commentToPost = {
+                  username: "mallionaire",
+                  body: "I love this game!",
+                };
+
+                return request(app)
+                  .post("/api/reviews/100/comments")
+                  .send(commentToPost)
+                  .expect(404)
+                  .then(({ body: { message } }) => {
+                    expect(message).toBe("Review does not exist");
+                  });
+              });
             });
           });
         });
