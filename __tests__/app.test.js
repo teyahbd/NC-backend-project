@@ -257,23 +257,23 @@ describe("app", () => {
                 expect(message).toBe("Bad request");
               });
           });
-          describe(" Endpoint Error Handling", () => {
-            test("400: responds with error when passed an invalid id", () => {
-              return request(app)
-                .get("/api/reviews/notAnId")
-                .expect(400)
-                .then(({ body: { message } }) => {
-                  expect(message).toBe("Bad request");
-                });
-            });
-            test("404: responds with error when passed id that does not exist", () => {
-              return request(app)
-                .get("/api/reviews/100")
-                .expect(404)
-                .then(({ body: { message } }) => {
-                  expect(message).toBe("Review not found");
-                });
-            });
+        });
+        describe(" Endpoint Error Handling", () => {
+          test("400: responds with error when passed an invalid id", () => {
+            return request(app)
+              .get("/api/reviews/notAnId")
+              .expect(400)
+              .then(({ body: { message } }) => {
+                expect(message).toBe("Bad request");
+              });
+          });
+          test("404: responds with error when passed id that does not exist", () => {
+            return request(app)
+              .get("/api/reviews/100")
+              .expect(404)
+              .then(({ body: { message } }) => {
+                expect(message).toBe("Review not found");
+              });
           });
         });
         describe("/comments", () => {
