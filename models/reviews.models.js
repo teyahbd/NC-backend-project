@@ -34,6 +34,17 @@ exports.updateReviewById = (review_id, inc_votes = "undefined") => {
     });
 };
 
+exports.fetchCommentsByReviewId = (review_id) => {
+  return db
+    .query(
+      `SELECT * FROM comments WHERE review_id=$1 ORDER BY created_at DESC`,
+      [review_id]
+    )
+    .then(({ rows: comments }) => {
+      return comments;
+    });
+};
+
 exports.fetchReviews = (category) => {
   const validCategoryValues = [
     "euro_game",
@@ -49,7 +60,6 @@ exports.fetchReviews = (category) => {
   LEFT JOIN comments ON reviews.review_id=comments.review_id`;
 
   if (category) {
-    console.log(category);
     if (!validCategoryValues.includes(category)) {
       return Promise.reject({ status: 400, message: "Invalid category" });
     }

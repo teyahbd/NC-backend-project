@@ -258,6 +258,83 @@ describe("app", () => {
               });
           });
         });
+        describe("/comments", () => {
+          describe("GET: /api/reviews/:review_id/comments", () => {
+            test("200: responds with an array of comment objects", () => {
+              return request(app)
+                .get("/api/reviews/2/comments")
+                .expect(200)
+                .then(({ body: { comments } }) => {
+                  expect(comments).toHaveLength(3);
+
+                  comments.forEach((comment) => {
+                    expect(comment).toEqual(
+                      expect.objectContaining({
+                        comment_id: expect.any(Number),
+                        votes: expect.any(Number),
+                        created_at: expect.any(String),
+                        author: expect.any(String),
+                        body: expect.any(String),
+                        review_id: 2,
+                      })
+                    );
+                  });
+                });
+            });
+            test("200: responds with an array of comment objects with most recent first", () => {
+              return request(app)
+                .get("/api/reviews/3/comments")
+                .expect(200)
+                .then(({ body: { comments } }) => {
+                  expect(comments).toHaveLength(3);
+
+                  const sortedComments = comments.map((comment) => {
+                    return { ...comment };
+                  });
+
+                  function compareDates(a, b) {
+                    if (a.created_at > b.created_at) {
+                      return -1;
+                    }
+                    if (a.created_at < b.created_at) {
+                      return 1;
+                    }
+                    return 0;
+                  }
+
+                  sortedComments.sort(compareDates);
+
+                  expect(comments).toStrictEqual(sortedComments);
+                });
+            });
+            test("200: returns empty array where review exists but has no comments", () => {
+              return request(app)
+                .get("/api/reviews/1/comments")
+                .expect(200)
+                .then(({ body: { comments } }) => {
+                  expect(comments).toHaveLength(0);
+                });
+            });
+          });
+          describe("Error Handling", () => {
+            test("400: responds with error when passed an invalid id", () => {
+              return request(app)
+                .get("/api/reviews/notAnId/comments")
+                .expect(400)
+                .then(({ body: { message } }) => {
+                  expect(message).toBe("Bad request");
+                });
+            });
+            test("404: responds with error when passed id that does not exist", () => {
+              return request(app)
+                .get("/api/reviews/100/comments")
+                .expect(404)
+                .then(({ body: { message } }) => {
+                  expect(message).toBe("No review found with review id: 100");
+                });
+            });
+          });
+        });
         describe("General Errors", () => {
           test("400: responds with error when passed an invalid id", () => {
             return request(app)
