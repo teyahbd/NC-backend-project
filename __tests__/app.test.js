@@ -354,12 +354,34 @@ describe("app", () => {
           });
         });
         describe("/comments", () => {
-          describe("PATCH: /api/reviews/:review_id/comments", () => {
+          describe("POST: /api/reviews/:review_id/comments", () => {
             test("201: responds with comment object that has been added to database", () => {
               const commentToPost = {
                 username: "mallionaire",
                 body: "I love this game!",
               };
+              return request(app)
+                .post("/api/reviews/1/comments")
+                .send(commentToPost)
+                .expect(201)
+                .then(({ body: { comment } }) => {
+                  expect(comment).toEqual({
+                    comment_id: 7,
+                    author: "mallionaire",
+                    body: "I love this game!",
+                    votes: 0,
+                    review_id: 1,
+                    created_at: expect.any(String),
+                  });
+                });
+            });
+            test("201: ignores any additional keys on request body and completes post request successfully", () => {
+              const commentToPost = {
+                username: "mallionaire",
+                body: "I love this game!",
+                votes: 4,
+              };
+
               return request(app)
                 .post("/api/reviews/1/comments")
                 .send(commentToPost)
