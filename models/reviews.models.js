@@ -1,4 +1,5 @@
 const db = require("../db/connection");
+const format = require("pg-format");
 
 exports.fetchReviewById = (review_id) => {
   return db
@@ -45,7 +46,7 @@ exports.fetchCommentsByReviewId = (review_id) => {
     });
 };
 
-exports.fetchReviews = (category) => {
+exports.fetchReviews = ({ category, sort_by, order }) => {
   const validCategoryValues = [
     "euro_game",
     "social_deduction",
@@ -67,8 +68,21 @@ exports.fetchReviews = (category) => {
     queryValues.push(category);
   }
 
-  queryStr += ` GROUP BY reviews.review_id
-  ORDER BY reviews.created_at DESC;`;
+  queryStr += ` GROUP BY reviews.review_id`;
+
+  if (sort_by) {
+    queryStr += ` ORDER BY reviews.%I DESC;`;
+  } else if (order) {
+    queryStr += ` ORDER BY reviews.created_at ${order};`;
+  } else {
+    queryStr += ` ORDER BY reviews.created_at DESC;`;
+  }
+
+  //const formatQueryStr = format(queryStr, order);
+
+  //console.log(formatQueryStr);
+
+  console.log(queryStr);
 
   return db.query(queryStr, queryValues).then(({ rows: reviews }) => {
     return reviews;

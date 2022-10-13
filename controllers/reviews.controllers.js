@@ -37,7 +37,7 @@ exports.getCommentsByReviewId = (req, res, next) => {
 };
 
 exports.getReviews = (req, res, next) => {
-  fetchReviews(req.query.category)
+  fetchReviews(req.query)
     .then((reviews) => {
       res.status(200).send(reviews);
     })

@@ -88,38 +88,72 @@ describe("app", () => {
               expect(reviews).toStrictEqual(sortedReviews);
             });
         });
-        test("200: accepts category query", () => {
-          return request(app)
-            .get("/api/reviews?category=dexterity")
-            .expect(200)
-            .then(({ body: reviews }) => {
-              expect(reviews).toHaveLength(1);
+        describe("Queries", () => {
+          //check category query works with the others
+          test("200: accepts category query", () => {
+            return request(app)
+              .get("/api/reviews?category=dexterity")
+              .expect(200)
+              .then(({ body: reviews }) => {
+                expect(reviews).toHaveLength(1);
 
-              expect(reviews).toEqual([
-                {
-                  review_id: 2,
-                  title: "Jenga",
-                  designer: "Leslie Scott",
-                  owner: "philippaclaire9",
-                  review_img_url:
-                    "https://www.golenbock.com/wp-content/uploads/2015/01/placeholder-user.png",
-                  review_body: "Fiddly fun for all the family",
-                  category: "dexterity",
-                  created_at: "2021-01-18T10:01:41.251Z",
-                  votes: 5,
-                  comment_count: 3,
-                },
-              ]);
-            });
+                expect(reviews).toEqual([
+                  {
+                    review_id: 2,
+                    title: "Jenga",
+                    designer: "Leslie Scott",
+                    owner: "philippaclaire9",
+                    review_img_url:
+                      "https://www.golenbock.com/wp-content/uploads/2015/01/placeholder-user.png",
+                    review_body: "Fiddly fun for all the family",
+                    category: "dexterity",
+                    created_at: "2021-01-18T10:01:41.251Z",
+                    votes: 5,
+                    comment_count: 3,
+                  },
+                ]);
+              });
+          });
+          test("200: returns empty array when passed category that exists but has no associated reviews", () => {
+            return request(app)
+              .get("/api/reviews?category=childrens_games")
+              .expect(200)
+              .then(({ body: reviews }) => {
+                expect(reviews).toHaveLength(0);
+              });
+          });
+          test("200: accepts sort_by query that defaults order to descending", () => {
+            // apparently sql does a stupid way of alphabetical ordering otheriwse this works!!!
+            return request(app)
+              .get("/api/reviews?sort_by=title")
+              .expect(200)
+              .then(({ body: reviews }) => {
+                expect(reviews).toHaveLength(13);
+
+                const newReviews = reviews.map((review) => review.title);
+
+                console.log(newReviews);
+
+                expect(reviews).toBeSortedBy("title", {
+                  descending: true,
+                });
+              });
+          });
+          test.only("200: accepts order query that defaults column to date", () => {
+            return request(app)
+              .get("/api/reviews?order=asc")
+              .expect(200)
+              .then(({ body: reviews }) => {
+                expect(reviews).toHaveLength(13);
+
+                expect(reviews).toBeSortedBy("created_at", {
+                  descending: false,
+                });
+              });
+          });
         });
-        test("200: returns empty array when passed category that exists but has no associated reviews", () => {
-          return request(app)
-            .get("/api/reviews?category=childrens_games")
-            .expect(200)
-            .then(({ body: reviews }) => {
-              expect(reviews).toHaveLength(0);
-            });
-        });
+      });
+      describe("Error Handling", () => {
         test("400: returns error message when passed invalid category query value", () => {
           return request(app)
             .get("/api/reviews?category=not_a_category")
@@ -128,6 +162,14 @@ describe("app", () => {
               expect(message).toBe("Invalid category");
             });
         });
+        // is this a 404????
+        /*
+        test("400: returns error message when passed invalid sort_by query value", () => {
+          return request(app)
+          .get("/api/reviews?sort_by=not_a_column")
+          .expect(400)
+        });
+        */
       });
       describe("/:review_id", () => {
         describe("GET: /api/reviews/:review_id", () => {
