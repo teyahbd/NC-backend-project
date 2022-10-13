@@ -88,7 +88,7 @@ describe("app", () => {
               expect(reviews).toStrictEqual(sortedReviews);
             });
         });
-        test("200: accepts category query of dexterity", () => {
+        test("200: accepts category query", () => {
           return request(app)
             .get("/api/reviews?category=dexterity")
             .expect(200)

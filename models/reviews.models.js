@@ -42,24 +42,25 @@ exports.fetchReviews = (category) => {
     "childrens_games",
   ];
 
-  if (!validCategoryValues.includes(category) && category !== undefined) {
-    return Promise.reject({ status: 400, message: "Invalid category" });
-  }
+  const queryValues = [];
 
-  let queryStr = `SELECT reviews.*, COALESCE(count_table.comment_count, 0) as comment_count
+  let queryStr = `SELECT reviews.*, COUNT(comments.comment_id)::int as comment_count
   FROM reviews
-  LEFT JOIN (SELECT review_id, COUNT(review_id)::int as comment_count
-  FROM comments
-  GROUP BY review_id) count_table ON reviews.review_id = count_table.review_id`;
+  LEFT JOIN comments ON reviews.review_id=comments.review_id`;
 
   if (category) {
-    //sql injection??????
-    queryStr += ` WHERE reviews.category='${category}'`;
+    console.log(category);
+    if (!validCategoryValues.includes(category)) {
+      return Promise.reject({ status: 400, message: "Invalid category" });
+    }
+    queryStr += ` WHERE reviews.category=$1`;
+    queryValues.push(category);
   }
 
-  queryStr += ` ORDER BY reviews.created_at DESC;`;
+  queryStr += ` GROUP BY reviews.review_id
+  ORDER BY reviews.created_at DESC;`;
 
-  return db.query(queryStr).then(({ rows: reviews }) => {
+  return db.query(queryStr, queryValues).then(({ rows: reviews }) => {
     return reviews;
   });
 };
