@@ -316,6 +316,24 @@ describe("app", () => {
                 });
             });
           });
+          describe("Error Handling", () => {
+            test("400: responds with error when passed an invalid id", () => {
+              return request(app)
+                .get("/api/reviews/notAnId/comments")
+                .expect(400)
+                .then(({ body: { message } }) => {
+                  expect(message).toBe("Bad request");
+                });
+            });
+            test.only("404: responds with error when passed id that does not exist", () => {
+              return request(app)
+                .get("/api/reviews/100/comments")
+                .expect(404)
+                .then(({ body: { message } }) => {
+                  expect(message).toBe("No review found with review id: 100");
+                });
+            });
+          });
         });
         describe("General Errors", () => {
           test("400: responds with error when passed an invalid id", () => {

@@ -22,9 +22,18 @@ exports.patchReviewById = (req, res, next) => {
 };
 
 exports.getCommentsByReviewId = (req, res, next) => {
-  fetchCommentsByReviewId(req.params.review_id).then((comments) => {
-    res.status(200).send({ comments });
-  });
+  const { review_id } = req.params;
+
+  const promises = [
+    fetchCommentsByReviewId(review_id),
+    fetchReviewById(review_id),
+  ];
+
+  Promise.all(promises)
+    .then((promises) => {
+      res.status(200).send({ comments: promises[0] });
+    })
+    .catch(next);
 };
 
 exports.getReviews = (req, res, next) => {
