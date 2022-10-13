@@ -60,7 +60,6 @@ exports.fetchReviews = (category) => {
   LEFT JOIN comments ON reviews.review_id=comments.review_id`;
 
   if (category) {
-    console.log(category);
     if (!validCategoryValues.includes(category)) {
       return Promise.reject({ status: 400, message: "Invalid category" });
     }

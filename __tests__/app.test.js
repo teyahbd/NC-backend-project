@@ -303,12 +303,18 @@ describe("app", () => {
                   }
 
                   sortedComments.sort(compareDates);
-                  console.log(sortedComments);
 
                   expect(comments).toStrictEqual(sortedComments);
                 });
             });
-            //test("200: empty array where review exists but no comments")
+            test("200: returns empty array where review exists but has no comments", () => {
+              return request(app)
+                .get("/api/reviews/1/comments")
+                .expect(200)
+                .then(({ body: { comments } }) => {
+                  expect(comments).toHaveLength(0);
+                });
+            });
           });
         });
         describe("General Errors", () => {
