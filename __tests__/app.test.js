@@ -314,7 +314,7 @@ describe("app", () => {
               .get("/api/reviews/100")
               .expect(404)
               .then(({ body: { message } }) => {
-                expect(message).toBe("No review found with review id: 100");
+                expect(message).toBe("Review not found");
               });
           });
         });
@@ -390,8 +390,111 @@ describe("app", () => {
                 .get("/api/reviews/100/comments")
                 .expect(404)
                 .then(({ body: { message } }) => {
-                  expect(message).toBe("No review found with review id: 100");
+                  expect(message).toBe("Review not found");
                 });
+            });
+          });
+        });
+        describe("/comments", () => {
+          describe("POST: /api/reviews/:review_id/comments", () => {
+            test("201: responds with comment object that has been added to database", () => {
+              const commentToPost = {
+                username: "mallionaire",
+                body: "I love this game!",
+              };
+              return request(app)
+                .post("/api/reviews/1/comments")
+                .send(commentToPost)
+                .expect(201)
+                .then(({ body: { comment } }) => {
+                  expect(comment).toEqual({
+                    comment_id: 7,
+                    author: "mallionaire",
+                    body: "I love this game!",
+                    votes: 0,
+                    review_id: 1,
+                    created_at: expect.any(String),
+                  });
+                });
+            });
+            test("201: ignores any additional keys on request body and completes post request successfully", () => {
+              const commentToPost = {
+                username: "mallionaire",
+                body: "I love this game!",
+                votes: 4,
+              };
+
+              return request(app)
+                .post("/api/reviews/1/comments")
+                .send(commentToPost)
+                .expect(201)
+                .then(({ body: { comment } }) => {
+                  expect(comment).toEqual({
+                    comment_id: 7,
+                    author: "mallionaire",
+                    body: "I love this game!",
+                    votes: 0,
+                    review_id: 1,
+                    created_at: expect.any(String),
+                  });
+                });
+            });
+            describe("Error Handling", () => {
+              test("400: responds with error when passed an invalid id", () => {
+                const commentToPost = {
+                  username: "mallionaire",
+                  body: "I love this game!",
+                };
+
+                return request(app)
+                  .post("/api/reviews/notAnId/comments")
+                  .send(commentToPost)
+                  .expect(400)
+                  .then(({ body: { message } }) => {
+                    expect(message).toBe("Bad request");
+                  });
+              });
+              test("400: responds with error when post body missing required fields", () => {
+                const commentToPost = {
+                  body: "I love this game!",
+                };
+
+                return request(app)
+                  .post("/api/reviews/1/comments")
+                  .send(commentToPost)
+                  .expect(400)
+                  .then(({ body: { message } }) => {
+                    expect(message).toBe("Bad request");
+                  });
+              });
+              test("404: responds with error when given username does not exist in the database", () => {
+                const commentToPost = {
+                  username: "teyahbd",
+                  body: "I love this game!",
+                };
+
+                return request(app)
+                  .post("/api/reviews/1/comments")
+                  .send(commentToPost)
+                  .expect(404)
+                  .then(({ body: { message } }) => {
+                    expect(message).toBe("Not found");
+                  });
+              });
+              test("404: responds with error when passed id that does not exist", () => {
+                const commentToPost = {
+                  username: "mallionaire",
+                  body: "I love this game!",
+                };
+
+                return request(app)
+                  .post("/api/reviews/100/comments")
+                  .send(commentToPost)
+                  .expect(404)
+                  .then(({ body: { message } }) => {
+                    expect(message).toBe("Not found");
+                  });
+              });
             });
           });
         });
