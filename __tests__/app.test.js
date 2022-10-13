@@ -273,12 +273,11 @@ describe("app", () => {
               .get("/api/reviews/100")
               .expect(404)
               .then(({ body: { message } }) => {
-                expect(message).toBe("Review does not exist");
+                expect(message).toBe("Review not found");
               });
           });
         });
         describe("/comments", () => {
-          // existing users only can make comments
           describe("PATCH: /api/reviews/:review_id/comments", () => {
             test("201: responds with comment object that has been added to database", () => {
               const commentToPost = {
@@ -315,6 +314,33 @@ describe("app", () => {
                     expect(message).toBe("Bad request");
                   });
               });
+              test("400: responds with error when post body missing required fields", () => {
+                const commentToPost = {
+                  body: "I love this game!",
+                };
+
+                return request(app)
+                  .post("/api/reviews/1/comments")
+                  .send(commentToPost)
+                  .expect(400)
+                  .then(({ body: { message } }) => {
+                    expect(message).toBe("Bad request");
+                  });
+              });
+              test("404: responds with error when given username does not exist in the database", () => {
+                const commentToPost = {
+                  username: "teyahbd",
+                  body: "I love this game!",
+                };
+
+                return request(app)
+                  .post("/api/reviews/1/comments")
+                  .send(commentToPost)
+                  .expect(404)
+                  .then(({ body: { message } }) => {
+                    expect(message).toBe("Not found");
+                  });
+              });
               test("404: responds with error when passed id that does not exist", () => {
                 const commentToPost = {
                   username: "mallionaire",
@@ -326,7 +352,21 @@ describe("app", () => {
                   .send(commentToPost)
                   .expect(404)
                   .then(({ body: { message } }) => {
-                    expect(message).toBe("Review does not exist");
+                    expect(message).toBe("Not found");
+                  });
+              });
+              test("404: responds with error when passed route that does not exist", () => {
+                const commentToPost = {
+                  username: "mallionaire",
+                  body: "I love this game!",
+                };
+
+                return request(app)
+                  .post("/api/reviews/1/comment")
+                  .send(commentToPost)
+                  .expect(404)
+                  .then(({ body: { message } }) => {
+                    expect(message).toBe("Invalid route");
                   });
               });
             });
