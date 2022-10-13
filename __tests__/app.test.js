@@ -257,6 +257,24 @@ describe("app", () => {
                 expect(message).toBe("Bad request");
               });
           });
+          describe(" Endpoint Error Handling", () => {
+            test("400: responds with error when passed an invalid id", () => {
+              return request(app)
+                .get("/api/reviews/notAnId")
+                .expect(400)
+                .then(({ body: { message } }) => {
+                  expect(message).toBe("Bad request");
+                });
+            });
+            test("404: responds with error when passed id that does not exist", () => {
+              return request(app)
+                .get("/api/reviews/100")
+                .expect(404)
+                .then(({ body: { message } }) => {
+                  expect(message).toBe("No review found with review id: 100");
+                });
+            });
+          });
         });
         describe("/comments", () => {
           describe("GET: /api/reviews/:review_id/comments", () => {
@@ -333,24 +351,6 @@ describe("app", () => {
                   expect(message).toBe("No review found with review id: 100");
                 });
             });
-          });
-        });
-        describe("General Errors", () => {
-          test("400: responds with error when passed an invalid id", () => {
-            return request(app)
-              .get("/api/reviews/notAnId")
-              .expect(400)
-              .then(({ body: { message } }) => {
-                expect(message).toBe("Bad request");
-              });
-          });
-          test("404: responds with error when passed id that does not exist", () => {
-            return request(app)
-              .get("/api/reviews/100")
-              .expect(404)
-              .then(({ body: { message } }) => {
-                expect(message).toBe("No review found with review id: 100");
-              });
           });
         });
       });
