@@ -492,6 +492,33 @@ describe("app", () => {
         });
       });
     });
+    describe("/comments", () => {
+      describe("/:comment_id", () => {
+        describe("DELETE: /api/comments/:comment_id", () => {
+          test("204: responds with no content", () => {
+            return request(app).delete("/api/comments/1").expect(204);
+          });
+        });
+        describe("Error Handling", () => {
+          test("400: responds with error when passed an invalid id", () => {
+            return request(app)
+              .delete("/api/comments/notAnId")
+              .expect(400)
+              .then(({ body: { message } }) => {
+                expect(message).toBe("Bad request");
+              });
+          });
+          test("404: responds with error when passed id that does not exist", () => {
+            return request(app)
+              .delete("/api/comments/100")
+              .expect(404)
+              .then(({ body: { message } }) => {
+                expect(message).toBe("Not found");
+              });
+          });
+        });
+      });
+    });
     describe("Universal Error Handling ", () => {
       test("404: responds with error when passed a route that does not exist", () => {
         return request(app)
