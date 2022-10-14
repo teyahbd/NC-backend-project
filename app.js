@@ -15,7 +15,7 @@ const {
   handleInternalErrors,
   handleInvalidRouteErrors,
 } = require("./controllers/errors.controllers");
-const {} = require("./controllers/comments.controllers");
+const { deleteCommentById } = require("./controllers/comments.controllers");
 
 const app = express();
 
@@ -30,7 +30,9 @@ app.get("/api/reviews/:review_id", getReviewById);
 app.get("/api/reviews/:review_id/comments", getCommentsByReviewId);
 app.patch("/api/reviews/:review_id", patchReviewById);
 app.post("/api/reviews/:review_id/comments", postComment);
-
+console.log("hi");
+app.delete("/api/comments/:comment_id", deleteCommentById);
+console.log("after");
 app.all("*", handleInvalidRouteErrors);
 
 app.use(handlePSQLErrors);
