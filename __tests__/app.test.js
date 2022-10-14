@@ -483,9 +483,10 @@ describe("app", () => {
     describe("/comments", () => {
       describe("/:comment_id", () => {
         describe("DELETE: /api/comments/:comment_id", () => {
-          /*  test.only("204: responds with no content", () => {
+          test.only("204: responds with no content", () => {
+            // can you test more to see if actually deleted??
             return request(app).delete("/api/comments/1").expect(204);
-          }); */
+          });
         });
       });
     });
