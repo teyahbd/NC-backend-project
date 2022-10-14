@@ -45,13 +45,31 @@ exports.fetchCommentsByReviewId = (review_id) => {
     });
 };
 
-exports.fetchReviews = (category) => {
-  const validCategoryValues = [
-    "euro_game",
-    "social_deduction",
-    "dexterity",
-    "childrens_games",
+exports.fetchReviews = (category, sort_by = "created_at", order = "desc") => {
+  const validSortByValues = [
+    "title",
+    "designer",
+    "owner",
+    "review_img_url",
+    "review_body",
+    "category",
+    "created_at",
+    "votes",
   ];
+
+  const validOrderValues = ["asc", "desc"];
+
+  if (sort_by) {
+    if (!validSortByValues.includes(sort_by)) {
+      return Promise.reject({ status: 400, message: "Bad request" });
+    }
+  }
+
+  if (order) {
+    if (!validOrderValues.includes(order)) {
+      return Promise.reject({ status: 400, message: "Bad request" });
+    }
+  }
 
   const queryValues = [];
 
@@ -60,15 +78,11 @@ exports.fetchReviews = (category) => {
   LEFT JOIN comments ON reviews.review_id=comments.review_id`;
 
   if (category) {
-    if (!validCategoryValues.includes(category)) {
-      return Promise.reject({ status: 400, message: "Invalid category" });
-    }
     queryStr += ` WHERE reviews.category=$1`;
     queryValues.push(category);
   }
 
-  queryStr += ` GROUP BY reviews.review_id
-  ORDER BY reviews.created_at DESC;`;
+  queryStr += ` GROUP BY reviews.review_id ORDER BY reviews.${sort_by} ${order};`;
 
   return db.query(queryStr, queryValues).then(({ rows: reviews }) => {
     return reviews;

@@ -8,6 +8,7 @@ const {
   reviewData,
   userData,
 } = require("../db/data/test-data");
+const { get } = require("../app.js");
 
 beforeEach(() => seed({ categoryData, commentData, reviewData, userData }));
 
@@ -88,44 +89,130 @@ describe("app", () => {
               expect(reviews).toStrictEqual(sortedReviews);
             });
         });
-        test("200: accepts category query", () => {
-          return request(app)
-            .get("/api/reviews?category=dexterity")
-            .expect(200)
-            .then(({ body: reviews }) => {
-              expect(reviews).toHaveLength(1);
+        describe("Queries", () => {
+          test("200: accepts category query", () => {
+            return request(app)
+              .get("/api/reviews?category=dexterity")
+              .expect(200)
+              .then(({ body: reviews }) => {
+                expect(reviews).toHaveLength(1);
 
-              expect(reviews).toEqual([
-                {
-                  review_id: 2,
-                  title: "Jenga",
-                  designer: "Leslie Scott",
-                  owner: "philippaclaire9",
-                  review_img_url:
-                    "https://www.golenbock.com/wp-content/uploads/2015/01/placeholder-user.png",
-                  review_body: "Fiddly fun for all the family",
-                  category: "dexterity",
-                  created_at: "2021-01-18T10:01:41.251Z",
-                  votes: 5,
-                  comment_count: 3,
-                },
-              ]);
-            });
+                expect(reviews).toEqual([
+                  {
+                    review_id: 2,
+                    title: "Jenga",
+                    designer: "Leslie Scott",
+                    owner: "philippaclaire9",
+                    review_img_url:
+                      "https://www.golenbock.com/wp-content/uploads/2015/01/placeholder-user.png",
+                    review_body: "Fiddly fun for all the family",
+                    category: "dexterity",
+                    created_at: "2021-01-18T10:01:41.251Z",
+                    votes: 5,
+                    comment_count: 3,
+                  },
+                ]);
+              });
+          });
+          test("200: returns empty array when passed category that exists but has no associated reviews", () => {
+            return request(app)
+              .get("/api/reviews?category=children's%20games")
+              .expect(200)
+              .then(({ body: reviews }) => {
+                expect(reviews).toHaveLength(0);
+              });
+          });
+          test("200: accepts sort_by query that defaults order to descending", () => {
+            return request(app)
+              .get("/api/reviews?sort_by=designer")
+              .expect(200)
+              .then(({ body: reviews }) => {
+                expect(reviews).toHaveLength(13);
+
+                expect(reviews).toBeSortedBy("designer", {
+                  descending: true,
+                });
+              });
+          });
+          test("200: accepts order query that defaults column to date", () => {
+            return request(app)
+              .get("/api/reviews?order=asc")
+              .expect(200)
+              .then(({ body: reviews }) => {
+                expect(reviews).toHaveLength(13);
+
+                expect(reviews).toBeSortedBy("created_at", {
+                  descending: false,
+                });
+              });
+          });
+          test("200: accepts order and sort query", () => {
+            return request(app)
+              .get("/api/reviews?sort_by=designer&order=asc")
+              .expect(200)
+              .then(({ body: reviews }) => {
+                expect(reviews).toHaveLength(13);
+
+                expect(reviews).toBeSortedBy("designer", { descending: false });
+              });
+          });
+          test("200: accepts order, sort and category query", () => {
+            return request(app)
+              .get(
+                "/api/reviews?category=social%20deduction&sort_by=review_body&order=asc"
+              )
+              .expect(200)
+              .then(({ body: reviews }) => {
+                expect(reviews).toHaveLength(11);
+
+                expect(reviews).toBeSortedBy("review_body", {
+                  descending: false,
+                });
+
+                reviews.forEach((review) => {
+                  expect(review).toEqual(
+                    expect.objectContaining({
+                      category: "social deduction",
+                    })
+                  );
+                });
+              });
+          });
         });
-        test("200: returns empty array when passed category that exists but has no associated reviews", () => {
-          return request(app)
-            .get("/api/reviews?category=childrens_games")
-            .expect(200)
-            .then(({ body: reviews }) => {
-              expect(reviews).toHaveLength(0);
-            });
-        });
-        test("400: returns error message when passed invalid category query value", () => {
+      });
+      describe("Error Handling", () => {
+        test("404: returns error message when passed category query that does not exist", () => {
           return request(app)
             .get("/api/reviews?category=not_a_category")
+            .expect(404)
+            .then(({ body: { message } }) => {
+              expect(message).toBe("Not found");
+            });
+        });
+        test("400: returns error message when passed invalid sort_by query value", () => {
+          return request(app)
+            .get("/api/reviews?sort_by=not_a_column")
             .expect(400)
             .then(({ body: { message } }) => {
-              expect(message).toBe("Invalid category");
+              expect(message).toBe("Bad request");
+            });
+        });
+        test("400: returns error message when passed invalid order query value", () => {
+          return request(app)
+            .get("/api/reviews?order=not_asc")
+            .expect(400)
+            .then(({ body: { message } }) => {
+              expect(message).toBe("Bad request");
+            });
+        });
+        test("400: returns error message when one of multiple queries has invalid value", () => {
+          return request(app)
+            .get(
+              "/api/reviews?category=social%20deduction&sort_by=review_body&order=not_asc"
+            )
+            .expect(400)
+            .then(({ body: { message } }) => {
+              expect(message).toBe("Bad request");
             });
         });
       });
