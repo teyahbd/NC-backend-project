@@ -11,8 +11,6 @@ exports.fetchCategoryBySlug = (slug) => {
     db.query(`SELECT * FROM categories WHERE slug=$1`, [slug]),
     this.fetchCategories(),
   ];
-
-  //check this was the right way to handle it?
   return Promise.all(promises).then(
     ([{ rows: queryCategory }, allCategories]) => {
       const containsCategory = allCategories.some((cat) => cat.slug === slug);
