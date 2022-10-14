@@ -8,6 +8,7 @@ const {
   reviewData,
   userData,
 } = require("../db/data/test-data");
+const endpointsFile = require("../endpoints.json");
 
 beforeEach(() => seed({ categoryData, commentData, reviewData, userData }));
 
@@ -15,6 +16,17 @@ afterAll(() => db.end());
 
 describe("app", () => {
   describe("/api", () => {
+    describe("GET: /api", () => {
+      test("200: responds with JSON describing all available endpoints", () => {
+        // is this the best way to test this?
+        return request(app)
+          .get("/api")
+          .expect(200)
+          .then(({ body: endpoints }) => {
+            expect(endpoints).toEqual(endpointsFile);
+          });
+      });
+    });
     describe("/categories", () => {
       describe("GET: /api/categories", () => {
         test("200: responds with array of category objects", () => {

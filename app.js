@@ -16,9 +16,15 @@ const {
   handleInvalidRouteErrors,
 } = require("./controllers/errors.controllers");
 
+const endpoints = require("./endpoints.json");
+
 const app = express();
 
 app.use(express.json());
+
+app.get("/api", (req, res, next) => {
+  res.status(200).send(endpoints);
+});
 
 app.get("/api/categories", getCategories);
 
