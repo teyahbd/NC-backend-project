@@ -52,7 +52,30 @@ exports.fetchReviews = ({ category, sort_by, order }) => {
     "social_deduction",
     "dexterity",
     "childrens_games",
+    undefined,
   ];
+
+  const validSortByValues = [
+    "title",
+    "designer",
+    "owner",
+    "review_img_url",
+    "review_body",
+    "category",
+    "created_at",
+    "votes",
+    undefined,
+  ];
+
+  const validOrderValues = ["asc", "desc", undefined];
+
+  if (
+    !validCategoryValues.includes(category) ||
+    !validSortByValues.includes(sort_by) ||
+    !validOrderValues.includes(order)
+  ) {
+    return Promise.reject({ status: 400, message: "Bad request" });
+  }
 
   const queryValues = [];
 
@@ -60,29 +83,29 @@ exports.fetchReviews = ({ category, sort_by, order }) => {
   FROM reviews
   LEFT JOIN comments ON reviews.review_id=comments.review_id`;
 
-  if (category) {
-    if (!validCategoryValues.includes(category)) {
-      return Promise.reject({ status: 400, message: "Invalid category" });
-    }
+  if (category !== undefined) {
+    category = category.replace(/_/g, " ");
     queryStr += ` WHERE reviews.category=$1`;
     queryValues.push(category);
   }
 
   queryStr += ` GROUP BY reviews.review_id`;
 
-  if (sort_by) {
-    queryStr += ` ORDER BY reviews.%I DESC;`;
-  } else if (order) {
-    queryStr += ` ORDER BY reviews.created_at ${order};`;
+  if (sort_by !== undefined) {
+    if (order === "asc") {
+      queryStr += ` ORDER BY reviews.${sort_by} ASC;`;
+    } else {
+      queryStr += ` ORDER BY reviews.${sort_by} DESC;`;
+    }
+  } else if (order !== undefined) {
+    if (order === "asc") {
+      queryStr += ` ORDER BY reviews.created_at ASC;`;
+    } else {
+      queryStr += ` ORDER BY reviews.created_at DESC;`;
+    }
   } else {
     queryStr += ` ORDER BY reviews.created_at DESC;`;
   }
-
-  //const formatQueryStr = format(queryStr, order);
-
-  //console.log(formatQueryStr);
-
-  console.log(queryStr);
 
   return db.query(queryStr, queryValues).then(({ rows: reviews }) => {
     return reviews;

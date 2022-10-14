@@ -8,6 +8,7 @@ const {
   reviewData,
   userData,
 } = require("../db/data/test-data");
+const { get } = require("../app.js");
 
 beforeEach(() => seed({ categoryData, commentData, reviewData, userData }));
 
@@ -89,7 +90,6 @@ describe("app", () => {
             });
         });
         describe("Queries", () => {
-          //check category query works with the others
           test("200: accepts category query", () => {
             return request(app)
               .get("/api/reviews?category=dexterity")
@@ -123,23 +123,18 @@ describe("app", () => {
               });
           });
           test("200: accepts sort_by query that defaults order to descending", () => {
-            // apparently sql does a stupid way of alphabetical ordering otheriwse this works!!!
             return request(app)
-              .get("/api/reviews?sort_by=title")
+              .get("/api/reviews?sort_by=designer")
               .expect(200)
               .then(({ body: reviews }) => {
                 expect(reviews).toHaveLength(13);
 
-                const newReviews = reviews.map((review) => review.title);
-
-                console.log(newReviews);
-
-                expect(reviews).toBeSortedBy("title", {
+                expect(reviews).toBeSortedBy("designer", {
                   descending: true,
                 });
               });
           });
-          test.only("200: accepts order query that defaults column to date", () => {
+          test("200: accepts order query that defaults column to date", () => {
             return request(app)
               .get("/api/reviews?order=asc")
               .expect(200)
@@ -151,6 +146,38 @@ describe("app", () => {
                 });
               });
           });
+          test("200: accepts order and sort query", () => {
+            return request(app)
+              .get("/api/reviews?sort_by=designer&order=asc")
+              .expect(200)
+              .then(({ body: reviews }) => {
+                expect(reviews).toHaveLength(13);
+
+                expect(reviews).toBeSortedBy("designer", { descending: false });
+              });
+          });
+          test("200: accepts order, sort and category query", () => {
+            return request(app)
+              .get(
+                "/api/reviews?category=social_deduction&sort_by=review_body&order=asc"
+              )
+              .expect(200)
+              .then(({ body: reviews }) => {
+                expect(reviews).toHaveLength(11);
+
+                expect(reviews).toBeSortedBy("review_body", {
+                  descending: false,
+                });
+
+                reviews.forEach((review) => {
+                  expect(review).toEqual(
+                    expect.objectContaining({
+                      category: "social deduction",
+                    })
+                  );
+                });
+              });
+          });
         });
       });
       describe("Error Handling", () => {
@@ -159,7 +186,7 @@ describe("app", () => {
             .get("/api/reviews?category=not_a_category")
             .expect(400)
             .then(({ body: { message } }) => {
-              expect(message).toBe("Invalid category");
+              expect(message).toBe("Bad request");
             });
         });
         // is this a 404????
