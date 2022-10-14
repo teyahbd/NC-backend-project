@@ -480,6 +480,9 @@ describe("app", () => {
         });
       });
     });
+    describe("/comments", () => {
+      describe("/:comment_id", () => {});
+    });
     describe("Universal Error Handling ", () => {
       test("404: responds with error when passed a route that does not exist", () => {
         return request(app)

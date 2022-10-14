@@ -15,6 +15,7 @@ const {
   handleInternalErrors,
   handleInvalidRouteErrors,
 } = require("./controllers/errors.controllers");
+const {} = require("./controllers/comments.controllers");
 
 const app = express();
 
