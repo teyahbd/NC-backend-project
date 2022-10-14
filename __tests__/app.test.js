@@ -116,7 +116,7 @@ describe("app", () => {
           });
           test("200: returns empty array when passed category that exists but has no associated reviews", () => {
             return request(app)
-              .get("/api/reviews?category=childrens_games")
+              .get("/api/reviews?category=children's%20games")
               .expect(200)
               .then(({ body: reviews }) => {
                 expect(reviews).toHaveLength(0);
@@ -159,7 +159,7 @@ describe("app", () => {
           test("200: accepts order, sort and category query", () => {
             return request(app)
               .get(
-                "/api/reviews?category=social_deduction&sort_by=review_body&order=asc"
+                "/api/reviews?category=social%20deduction&sort_by=review_body&order=asc"
               )
               .expect(200)
               .then(({ body: reviews }) => {
@@ -181,12 +181,12 @@ describe("app", () => {
         });
       });
       describe("Error Handling", () => {
-        test("400: returns error message when passed invalid category query value", () => {
+        test("404: returns error message when passed category query that does not exist", () => {
           return request(app)
             .get("/api/reviews?category=not_a_category")
-            .expect(400)
+            .expect(404)
             .then(({ body: { message } }) => {
-              expect(message).toBe("Bad request");
+              expect(message).toBe("Not found");
             });
         });
         test("400: returns error message when passed invalid sort_by query value", () => {
@@ -208,7 +208,7 @@ describe("app", () => {
         test("400: returns error message when one of multiple queries has invalid value", () => {
           return request(app)
             .get(
-              "/api/reviews?category=social_deduction&sort_by=review_body&order=not_asc"
+              "/api/reviews?category=social%20deduction&sort_by=review_body&order=not_asc"
             )
             .expect(400)
             .then(({ body: { message } }) => {

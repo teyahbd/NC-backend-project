@@ -46,15 +46,7 @@ exports.fetchCommentsByReviewId = (review_id) => {
     });
 };
 
-exports.fetchReviews = ({ category, sort_by, order }) => {
-  const validCategoryValues = [
-    "euro_game",
-    "social_deduction",
-    "dexterity",
-    "childrens_games",
-    undefined,
-  ];
-
+exports.fetchReviews = (category, sort_by = "created_at", order = "desc") => {
   const validSortByValues = [
     "title",
     "designer",
@@ -64,17 +56,20 @@ exports.fetchReviews = ({ category, sort_by, order }) => {
     "category",
     "created_at",
     "votes",
-    undefined,
   ];
 
-  const validOrderValues = ["asc", "desc", undefined];
+  const validOrderValues = ["asc", "desc"];
 
-  if (
-    !validCategoryValues.includes(category) ||
-    !validSortByValues.includes(sort_by) ||
-    !validOrderValues.includes(order)
-  ) {
-    return Promise.reject({ status: 400, message: "Bad request" });
+  if (sort_by) {
+    if (!validSortByValues.includes(sort_by)) {
+      return Promise.reject({ status: 400, message: "Bad request" });
+    }
+  }
+
+  if (order) {
+    if (!validOrderValues.includes(order)) {
+      return Promise.reject({ status: 400, message: "Bad request" });
+    }
   }
 
   const queryValues = [];
@@ -83,29 +78,12 @@ exports.fetchReviews = ({ category, sort_by, order }) => {
   FROM reviews
   LEFT JOIN comments ON reviews.review_id=comments.review_id`;
 
-  if (category !== undefined) {
-    category = category.replace(/_/g, " ");
+  if (category) {
     queryStr += ` WHERE reviews.category=$1`;
     queryValues.push(category);
   }
 
-  queryStr += ` GROUP BY reviews.review_id`;
-
-  if (sort_by !== undefined) {
-    if (order === "asc") {
-      queryStr += ` ORDER BY reviews.${sort_by} ASC;`;
-    } else {
-      queryStr += ` ORDER BY reviews.${sort_by} DESC;`;
-    }
-  } else if (order !== undefined) {
-    if (order === "asc") {
-      queryStr += ` ORDER BY reviews.created_at ASC;`;
-    } else {
-      queryStr += ` ORDER BY reviews.created_at DESC;`;
-    }
-  } else {
-    queryStr += ` ORDER BY reviews.created_at DESC;`;
-  }
+  queryStr += ` GROUP BY reviews.review_id ORDER BY reviews.${sort_by} ${order};`;
 
   return db.query(queryStr, queryValues).then(({ rows: reviews }) => {
     return reviews;
