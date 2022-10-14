@@ -189,14 +189,32 @@ describe("app", () => {
               expect(message).toBe("Bad request");
             });
         });
-        // is this a 404????
-        /*
         test("400: returns error message when passed invalid sort_by query value", () => {
           return request(app)
-          .get("/api/reviews?sort_by=not_a_column")
-          .expect(400)
+            .get("/api/reviews?sort_by=not_a_column")
+            .expect(400)
+            .then(({ body: { message } }) => {
+              expect(message).toBe("Bad request");
+            });
         });
-        */
+        test("400: returns error message when passed invalid order query value", () => {
+          return request(app)
+            .get("/api/reviews?order=not_asc")
+            .expect(400)
+            .then(({ body: { message } }) => {
+              expect(message).toBe("Bad request");
+            });
+        });
+        test("400: returns error message when one of multiple queries has invalid value", () => {
+          return request(app)
+            .get(
+              "/api/reviews?category=social_deduction&sort_by=review_body&order=not_asc"
+            )
+            .expect(400)
+            .then(({ body: { message } }) => {
+              expect(message).toBe("Bad request");
+            });
+        });
       });
       describe("/:review_id", () => {
         describe("GET: /api/reviews/:review_id", () => {
