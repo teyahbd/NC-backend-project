@@ -9,7 +9,10 @@ const {
   getCommentsByReviewId,
   postComment,
 } = require("./controllers/reviews.controllers");
-const { getUsers } = require("./controllers/users.controllers");
+const {
+  getUsers,
+  patchUserByUsername,
+} = require("./controllers/users.controllers");
 const {
   handlePSQLErrors,
   handleCustomErrors,
@@ -26,6 +29,7 @@ app.use(express.json());
 app.get("/api/categories", getCategories);
 
 app.get("/api/users", getUsers);
+app.patch("/api/users/:user_id", patchUserByUsername);
 
 app.get("/api/reviews", getReviews);
 app.get("/api/reviews/:review_id", getReviewById);
