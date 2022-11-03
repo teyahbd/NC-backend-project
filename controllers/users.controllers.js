@@ -9,6 +9,7 @@ exports.getUsers = (req, res, next) => {
 };
 
 exports.patchUserByUsername = (req, res, next) => {
+  console.log("controller");
   updateUserByUsername(req.params.username, req.body.vote_increments)
     .then((user) => {
       res.status(200).send({ user });

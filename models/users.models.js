@@ -6,19 +6,20 @@ exports.fetchUsers = () => {
   });
 };
 
-exports.patchUserByUsername = (username, vote_increments) => {
+exports.updateUserByUsername = (username, vote_increments) => {
+  console.log("model");
   return db
     .query(
       `UPDATE users SET vote_increments = $1 WHERE username = $2 RETURNING *`,
       [vote_increments, username]
     )
-    .then(({ rows: [user] }) => {
-      if (!user) {
+    .then(({ rows }) => {
+      if (!rows) {
         return Promise.reject({
           status: 404,
           message: "User not found",
         });
       }
-      return user;
+      return rows;
     });
 };

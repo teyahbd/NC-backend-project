@@ -23,6 +23,7 @@ const { deleteCommentById } = require("./controllers/comments.controllers");
 
 const app = express();
 app.use(cors());
+console.log("app");
 
 app.use(express.json());
 
