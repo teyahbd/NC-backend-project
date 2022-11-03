@@ -19,7 +19,7 @@ const seed = async (data) => {
     description VARCHAR
   );`);
 
-  let voteIncrementsStr = new Array(reviewData.length - 1).fill(0).join("");
+  let voteIncrementsStr = new Array(reviewData.length).fill(0).join("");
 
   const usersTablePromise = db.query(
     `
