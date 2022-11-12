@@ -1,10 +1,8 @@
 {
-  "Current Page": {
+  "Endpoints": {
     "GET /api": {
       "description": "serves up a json representation of all the available endpoints of the api"
-    }
-  },
-  "Categories Endpoints": {
+    },
     "GET /api/categories": {
       "description": "returns an array of all categories",
       "queries": [],
@@ -30,9 +28,7 @@
           "description": "Games involving physical skill, something like Gladiators, for Board Games!"
         }
       }
-    }
-  },
-  "Users Endpoints": {
+    },
     "GET /api/users": {
       "description": "returns an array of all users",
       "queries": [],
@@ -52,9 +48,7 @@
           }
         ]
       }
-    }
-  },
-  "Comments Endpoints": {
+    },
     "GET /api/comments/:comment_id": {
       "description": "returns an object containing the requested comment",
       "queries": [],
@@ -73,9 +67,7 @@
       "description": "deletes the given comment",
       "queries": [],
       "exampleResponse": {}
-    }
-  },
-  "Reviews Endpoints": {
+    },
     "GET /api/reviews": {
       "description": "returns an array of all reviews",
       "queries": ["category", "sort_by", "order"],
