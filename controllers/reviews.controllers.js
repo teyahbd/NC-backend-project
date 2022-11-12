@@ -1,22 +1,22 @@
 const {
-  fetchReviewById,
-  updateReviewById,
+  fetchReviewByReviewId,
+  updateReviewByReviewId,
   fetchCommentsByReviewId,
   fetchReviews,
   addCommentByReviewId,
 } = require("../models/reviews.models");
 const { fetchCategoryBySlug } = require("../models/categories.models");
 
-exports.getReviewById = (req, res, next) => {
-  fetchReviewById(req.params.review_id)
+exports.getReviewByReviewId = (req, res, next) => {
+  fetchReviewByReviewId(req.params.review_id)
     .then((review) => {
       res.status(200).send({ review });
     })
     .catch(next);
 };
 
-exports.patchReviewById = (req, res, next) => {
-  updateReviewById(req.params.review_id, req.body.inc_votes)
+exports.patchReviewByReviewId = (req, res, next) => {
+  updateReviewByReviewId(req.params.review_id, req.body.inc_votes)
     .then((review) => {
       res.status(200).send({ review });
     })
@@ -28,7 +28,7 @@ exports.getCommentsByReviewId = (req, res, next) => {
 
   const promises = [
     fetchCommentsByReviewId(review_id),
-    fetchReviewById(review_id),
+    fetchReviewByReviewId(review_id),
   ];
 
   Promise.all(promises)
