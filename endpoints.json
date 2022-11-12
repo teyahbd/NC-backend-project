@@ -1,34 +1,69 @@
 {
-  "GET /api": {
-    "description": "serves up a json representation of all the available endpoints of the api"
-  },
-  "GET /api/categories": {
-    "description": "serves an array of all categories",
-    "queries": [],
-    "exampleResponse": {
-      "categories": [
-        {
-          "description": "Players attempt to uncover each other's hidden role",
-          "slug": "Social deduction"
-        }
-      ]
+  "Current Page": {
+    "GET /api": {
+      "description": "serves up a json representation of all the available endpoints of the api"
     }
   },
-  "GET /api/reviews": {
-    "description": "serves an array of all reviews",
-    "queries": ["category", "sort_by", "order"],
-    "exampleResponse": {
-      "reviews": [
-        {
-          "title": "One Night Ultimate Werewolf",
-          "designer": "Akihisa Okui",
-          "owner": "happyamy2016",
-          "review_img_url": "https://images.pexels.com/photos/5350049/pexels-photo-5350049.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
-          "category": "hidden-roles",
-          "created_at": 1610964101251,
-          "votes": 5
+  "Categories Endpoints": {
+    "GET /api/categories": {
+      "description": "returns an array of all categories",
+      "queries": [],
+      "exampleResponse": {
+        "categories": [
+          {
+            "slug": "dexterity",
+            "description": "Games involving physical skill, something like Gladiators, for Board Games!"
+          },
+          {
+            "slug": "push-your-luck",
+            "description": "Games that allow you to take bigger risks to achieve increasingly valuable rewards - or to decide to keep what you’ve got before you lose everything."
+          }
+        ]
+      }
+    },
+    "GET /api/categories/:slug": {
+      "description": "returns an object containing the requested category",
+      "queries": [],
+      "exampleResponse": {
+        "category": {
+          "slug": "dexterity",
+          "description": "Games involving physical skill, something like Gladiators, for Board Games!"
         }
-      ]
+      }
+    }
+  },
+  "Users Endpoints": {
+    "GET /api/users": {
+      "description": "returns an array of all users",
+      "queries": [],
+      "exampleResponse": {
+        "users": [
+          {
+            "username": "tickle122",
+            "name": "Tom Tickle",
+            "avatar_url": "https://vignette.wikia.nocookie.net/mrmen/images/d/d6/Mr-Tickle-9a.png/revision/latest?cb=20180127221953",
+            "vote_increments": "101111111122201111111111"
+          },
+          {
+            "username": "grumpy19",
+            "name": "Paul Grump",
+            "avatar_url": "https://vignette.wikia.nocookie.net/mrmen/images/7/78/Mr-Grumpy-3A.PNG/revision/latest?cb=20170707233013",
+            "vote_increments": "121111112101111111100111"
+          }
+        ]
+      }
+    }
+  },
+  "Comments Endpoints": {
+    "GET /api/comments/:comment_id": {
+      "description": "returns an object containing the requested comment",
+      "queries": [],
+      "exampleResponse": {
+        "category": {
+          "slug": "dexterity",
+          "description": "Games involving physical skill, something like Gladiators, for Board Games!"
+        }
+      }
     }
   }
 }
