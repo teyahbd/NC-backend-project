@@ -51,13 +51,81 @@ describe("app", () => {
           });
         });
       });
-      describe("/categories Endpoint Error Handling", () => {
+      describe("Endpoint Error Handling", () => {
         test("404: responds with error when passed endpoint category that does not exist", () => {
           return request(app)
             .get("/api/categories/notacategory")
             .expect(404)
             .then(({ body }) => {
               expect(body.message).toBe("Not found");
+            });
+        });
+      });
+    });
+    describe("/users", () => {
+      describe("GET: /api/users", () => {
+        test("200: responds with array of user objects", () => {
+          return request(app)
+            .get("/api/users")
+            .expect(200)
+            .then(({ body: { users } }) => {
+              expect(users).toHaveLength(4);
+
+              users.forEach((user) => {
+                expect(user).toEqual(
+                  expect.objectContaining({
+                    username: expect.any(String),
+                    name: expect.any(String),
+                    avatar_url: expect.any(String),
+                  })
+                );
+              });
+            });
+        });
+      });
+    });
+    describe("/comments", () => {
+      describe("/:comment_id", () => {
+        describe("GET: /api/comments/:comment_id", () => {
+          test("200: responds with comment object of given comment id", () => {
+            return request(app)
+              .get("/api/comments/1")
+              .expect(200)
+              .then(({ body: { comment } }) => {
+                expect(comment).toEqual(
+                  expect.objectContaining({
+                    comment_id: 1,
+                    votes: expect.any(Number),
+                    created_at: expect.any(String),
+                    author: expect.any(String),
+                    body: expect.any(String),
+                    review_id: expect.any(Number),
+                  })
+                );
+              });
+          });
+        });
+        describe("DELETE: /api/comments/:comment_id", () => {
+          test("204: responds with no content", () => {
+            return request(app).delete("/api/comments/1").expect(204);
+          });
+        });
+      });
+      describe("Endpoint Error Handling", () => {
+        test("400: responds with error when passed an invalid id", () => {
+          return request(app)
+            .delete("/api/comments/notAnId")
+            .expect(400)
+            .then(({ body: { message } }) => {
+              expect(message).toBe("Bad request");
+            });
+        });
+        test("404: responds with error when passed id that does not exist", () => {
+          return request(app)
+            .delete("/api/comments/100")
+            .expect(404)
+            .then(({ body: { message } }) => {
+              expect(message).toBe("Not found");
             });
         });
       });
@@ -570,56 +638,7 @@ describe("app", () => {
         });
       });
     });
-    describe("/users", () => {
-      describe("GET: /api/users", () => {
-        test("200: responds with array of user objects", () => {
-          return request(app)
-            .get("/api/users")
-            .expect(200)
-            .then(({ body: { users } }) => {
-              expect(users).toHaveLength(4);
-
-              users.forEach((user) => {
-                expect(user).toEqual(
-                  expect.objectContaining({
-                    username: expect.any(String),
-                    name: expect.any(String),
-                    avatar_url: expect.any(String),
-                  })
-                );
-              });
-            });
-        });
-      });
-    });
-    describe("/comments", () => {
-      describe("/:comment_id", () => {
-        describe("DELETE: /api/comments/:comment_id", () => {
-          test("204: responds with no content", () => {
-            return request(app).delete("/api/comments/1").expect(204);
-          });
-        });
-        describe("Error Handling", () => {
-          test("400: responds with error when passed an invalid id", () => {
-            return request(app)
-              .delete("/api/comments/notAnId")
-              .expect(400)
-              .then(({ body: { message } }) => {
-                expect(message).toBe("Bad request");
-              });
-          });
-          test("404: responds with error when passed id that does not exist", () => {
-            return request(app)
-              .delete("/api/comments/100")
-              .expect(404)
-              .then(({ body: { message } }) => {
-                expect(message).toBe("Not found");
-              });
-          });
-        });
-      });
-    });
-    describe("Universal Error Handling ", () => {
+    describe("/api Endpoint Error Handling ", () => {
       test("404: responds with error when passed a route that does not exist", () => {
         return request(app)
           .get("/api/badroute")

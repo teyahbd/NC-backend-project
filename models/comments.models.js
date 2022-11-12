@@ -1,6 +1,6 @@
 const db = require("../db/connection");
 
-exports.fetchCommentById = (comment_id) => {
+exports.fetchCommentByCommentId = (comment_id) => {
   return db
     .query(`SELECT * FROM comments WHERE comment_id=$1`, [comment_id])
     .then(({ rows: comment }) => {
@@ -10,11 +10,11 @@ exports.fetchCommentById = (comment_id) => {
           message: "Not found",
         });
       }
-      return comment;
+      return comment[0];
     });
 };
 
-exports.removeCommentById = (comment_id) => {
+exports.removeCommentByCommentId = (comment_id) => {
   return db
     .query(`DELETE FROM comments WHERE comment_id=$1`, [comment_id])
     .then((response) => {

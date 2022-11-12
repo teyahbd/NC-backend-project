@@ -1,12 +1,20 @@
 const {
-  removeCommentById,
-  fetchCommentById,
+  removeCommentByCommentId,
+  fetchCommentByCommentId,
 } = require("../models/comments.models");
 
-exports.deleteCommentById = (req, res, next) => {
+exports.getCommentByCommentId = (req, res, next) => {
+  fetchCommentByCommentId(req.params.comment_id)
+    .then((comment) => {
+      res.status(200).send({ comment });
+    })
+    .catch(next);
+};
+
+exports.deleteCommentByCommentId = (req, res, next) => {
   const promises = [
-    fetchCommentById(req.params.comment_id),
-    removeCommentById(req.params.comment_id),
+    fetchCommentByCommentId(req.params.comment_id),
+    removeCommentByCommentId(req.params.comment_id),
   ];
 
   return Promise.all(promises)
