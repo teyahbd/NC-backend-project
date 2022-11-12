@@ -89,7 +89,7 @@ exports.fetchReviews = (category, sort_by = "created_at", order = "desc") => {
   });
 };
 
-exports.addComment = (review_id, reqBody) => {
+exports.addCommentByReviewId = (review_id, reqBody) => {
   const { username, body } = reqBody;
   return db
     .query(
