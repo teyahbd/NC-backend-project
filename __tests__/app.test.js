@@ -8,7 +8,6 @@ const {
   reviewData,
   userData,
 } = require("../db/data/test-data");
-const { get } = require("../app.js");
 
 beforeEach(() => seed({ categoryData, commentData, reviewData, userData }));
 
@@ -33,6 +32,32 @@ describe("app", () => {
                   })
                 );
               });
+            });
+        });
+      });
+      describe("/:slug", () => {
+        describe("GET /api/categories/:slug", () => {
+          test("200: responds with category object", () => {
+            return request(app)
+              .get("/api/categories/social%20deduction")
+              .expect(200)
+              .then(({ body: { category } }) => {
+                expect(category).toEqual({
+                  slug: "social deduction",
+                  description:
+                    "Players attempt to uncover each other's hidden role",
+                });
+              });
+          });
+        });
+      });
+      describe("/categories Endpoint Error Handling", () => {
+        test("404: responds with error when passed endpoint category that does not exist", () => {
+          return request(app)
+            .get("/api/categories/notacategory")
+            .expect(404)
+            .then(({ body }) => {
+              expect(body.message).toBe("Not found");
             });
         });
       });

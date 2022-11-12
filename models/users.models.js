@@ -7,7 +7,6 @@ exports.fetchUsers = () => {
 };
 
 exports.updateUserByUsername = (username, vote_increments) => {
-  console.log("model");
   return db
     .query(
       `UPDATE users SET vote_increments = $1 WHERE username = $2 RETURNING *`,

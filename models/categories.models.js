@@ -14,14 +14,13 @@ exports.fetchCategoryBySlug = (slug) => {
   return Promise.all(promises).then(
     ([{ rows: queryCategory }, allCategories]) => {
       const containsCategory = allCategories.some((cat) => cat.slug === slug);
-
       if (queryCategory.length === 0 && !containsCategory) {
         return Promise.reject({
           status: 404,
           message: "Not found",
         });
       } else {
-        return queryCategory;
+        return queryCategory[0];
       }
     }
   );
