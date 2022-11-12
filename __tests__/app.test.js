@@ -52,13 +52,15 @@ describe("app", () => {
         });
       });
       describe("Endpoint Error Handling", () => {
-        test("404: responds with error when passed slug that does not exist", () => {
-          return request(app)
-            .get("/api/categories/notacategory")
-            .expect(404)
-            .then(({ body }) => {
-              expect(body.message).toBe("Not found");
-            });
+        describe("/categories/:slug", () => {
+          test("404: responds with error when passed slug that does not exist", () => {
+            return request(app)
+              .get("/api/categories/notacategory")
+              .expect(404)
+              .then(({ body }) => {
+                expect(body.message).toBe("Not found");
+              });
+          });
         });
       });
     });
@@ -112,33 +114,35 @@ describe("app", () => {
         });
       });
       describe("Endpoint Error Handling", () => {
-        test("400: responds with error when passed an invalid id", () => {
-          return request(app)
-            .get("/api/comments/notAnId")
-            .expect(400)
-            .then(({ body: { message } }) => {
-              expect(message).toBe("Bad request");
-            })
-            .then(() => {
-              return request(app).delete("/api/comments/notAnId").expect(400);
-            })
-            .then(({ body: { message } }) => {
-              expect(message).toBe("Bad request");
-            });
-        });
-        test("404: responds with error when passed id that does not exist", () => {
-          return request(app)
-            .get("/api/comments/100")
-            .expect(404)
-            .then(({ body: { message } }) => {
-              expect(message).toBe("Not found");
-            })
-            .then(() => {
-              return request(app).delete("/api/comments/100").expect(404);
-            })
-            .then(({ body: { message } }) => {
-              expect(message).toBe("Not found");
-            });
+        describe("/comments/comment_id", () => {
+          test("400: responds with error when passed an invalid id", () => {
+            return request(app)
+              .get("/api/comments/notAnId")
+              .expect(400)
+              .then(({ body: { message } }) => {
+                expect(message).toBe("Bad request");
+              })
+              .then(() => {
+                return request(app).delete("/api/comments/notAnId").expect(400);
+              })
+              .then(({ body: { message } }) => {
+                expect(message).toBe("Bad request");
+              });
+          });
+          test("404: responds with error when passed id that does not exist", () => {
+            return request(app)
+              .get("/api/comments/100")
+              .expect(404)
+              .then(({ body: { message } }) => {
+                expect(message).toBe("Not found");
+              })
+              .then(() => {
+                return request(app).delete("/api/comments/100").expect(404);
+              })
+              .then(({ body: { message } }) => {
+                expect(message).toBe("Not found");
+              });
+          });
         });
       });
     });
@@ -168,7 +172,7 @@ describe("app", () => {
               });
             });
         });
-        /* test("200: responds with an array of review objects sorted by date in descending order when not passed query", () => {
+        test("200: responds with an array of review objects sorted by date in descending order when not passed query", () => {
           return request(app)
             .get("/api/reviews")
             .expect(200)
@@ -193,9 +197,9 @@ describe("app", () => {
 
               expect(reviews).toStrictEqual(sortedReviews);
             });
-        }); */
-        /* describe("Queries", () => {
-          test("200: accepts category query", () => {
+        });
+        describe("Queries", () => {
+          test("200: accepts valid category query", () => {
             return request(app)
               .get("/api/reviews?category=dexterity")
               .expect(200)
@@ -227,6 +231,10 @@ describe("app", () => {
                 expect(reviews).toHaveLength(0);
               });
           });
+        });
+
+        /* describe("Queries", () => {
+          
           test("200: accepts sort_by query that defaults order to descending", () => {
             return request(app)
               .get("/api/reviews?sort_by=designer")
@@ -319,7 +327,7 @@ describe("app", () => {
                 });
               });
           });
-          /* test("200: responds with review object of given review id with a comment count", () => {
+          test("200: responds with review object of given review id with a comment count", () => {
             return request(app)
               .get("/api/reviews/2")
               .expect(200)
@@ -338,7 +346,7 @@ describe("app", () => {
                   comment_count: 3,
                 });
               });
-          }); */
+          });
         });
         describe("PATCH: /api/reviews/:review_id", () => {
           test("200: responds with updated review object when vote increased", () => {
@@ -492,87 +500,92 @@ describe("app", () => {
                     review_id: 1,
                     created_at: expect.any(String),
                   });
+               
                 });
             });
           });
         }); */
       });
       describe("Endpoint Error Handling", () => {
-        test("400: responds with error when passed an invalid review id", () => {
-          const decReviewVotes = {
-            inc_votes: -3,
-          };
-
+        test("404: returns error message when passed category query that does not exist", () => {
           return request(app)
-            .get("/api/reviews/notAnId")
-            .expect(400)
-            .then(({ body: { message } }) => {
-              expect(message).toBe("Bad request");
-            })
-            .then(() => {
-              return request(app)
-                .patch("/api/reviews/notAnId")
-                .send(decReviewVotes)
-                .expect(400);
-            })
-            .then(({ body: { message } }) => {
-              expect(message).toBe("Bad request");
-            });
-        });
-        test("404: responds with error when passed review id that does not exist", () => {
-          const decReviewVotes = {
-            inc_votes: -3,
-          };
-
-          return request(app)
-            .get("/api/reviews/100")
+            .get("/api/reviews?category=not_a_category")
             .expect(404)
             .then(({ body: { message } }) => {
-              expect(message).toBe("Review not found");
-            })
-            .then(() => {
-              return request(app)
-                .patch("/api/reviews/100")
-                .send(decReviewVotes)
-                .expect(404);
-            })
-            .then(({ body: { message } }) => {
-              expect(message).toBe("Review not found");
+              expect(message).toBe("Not found");
             });
         });
-        test("400: responds with error when body is missing required fields in patch request", () => {
-          const badBody = {};
+        describe("/reviews/:review_id", () => {
+          test("400: responds with error when passed an invalid review id", () => {
+            const decReviewVotes = {
+              inc_votes: -3,
+            };
 
-          return request(app)
-            .patch("/api/reviews/1")
-            .send(badBody)
-            .expect(400)
-            .then(({ body: { message } }) => {
-              expect(message).toBe("Bad request");
-            });
-        });
-        test("400: responds with error when passed key value of wrong type in patch request", () => {
-          const badBody = {
-            inc_votes: "one vote",
-          };
-
-          return request(app)
-            .patch("/api/reviews/1")
-            .send(badBody)
-            .expect(400)
-            .then(({ body: { message } }) => {
-              expect(message).toBe("Bad request");
-            });
-        });
-        /* describe("Error Handling", () => {
-          test("404: returns error message when passed category query that does not exist", () => {
             return request(app)
-              .get("/api/reviews?category=not_a_category")
-              .expect(404)
+              .get("/api/reviews/notAnId")
+              .expect(400)
               .then(({ body: { message } }) => {
-                expect(message).toBe("Not found");
+                expect(message).toBe("Bad request");
+              })
+              .then(() => {
+                return request(app)
+                  .patch("/api/reviews/notAnId")
+                  .send(decReviewVotes)
+                  .expect(400);
+              })
+              .then(({ body: { message } }) => {
+                expect(message).toBe("Bad request");
               });
           });
+          test("404: responds with error when passed review id that does not exist", () => {
+            const decReviewVotes = {
+              inc_votes: -3,
+            };
+
+            return request(app)
+              .get("/api/reviews/100")
+              .expect(404)
+              .then(({ body: { message } }) => {
+                expect(message).toBe("Review not found");
+              })
+              .then(() => {
+                return request(app)
+                  .patch("/api/reviews/100")
+                  .send(decReviewVotes)
+                  .expect(404);
+              })
+              .then(({ body: { message } }) => {
+                expect(message).toBe("Review not found");
+              });
+          });
+          test("400: responds with error when body is missing required fields in patch request", () => {
+            const badBody = {};
+
+            return request(app)
+              .patch("/api/reviews/1")
+              .send(badBody)
+              .expect(400)
+              .then(({ body: { message } }) => {
+                expect(message).toBe("Bad request");
+              });
+          });
+          test("400: responds with error when passed key value of wrong type in patch request", () => {
+            const badBody = {
+              inc_votes: "one vote",
+            };
+
+            return request(app)
+              .patch("/api/reviews/1")
+              .send(badBody)
+              .expect(400)
+              .then(({ body: { message } }) => {
+                expect(message).toBe("Bad request");
+              });
+          });
+        });
+
+        /* describe("Error Handling", () => {
+          
           test("400: returns error message when passed invalid sort_by query value", () => {
             return request(app)
               .get("/api/reviews?sort_by=not_a_column")
