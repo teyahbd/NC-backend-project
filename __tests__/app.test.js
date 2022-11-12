@@ -231,10 +231,6 @@ describe("app", () => {
                 expect(reviews).toHaveLength(0);
               });
           });
-        });
-
-        /* describe("Queries", () => {
-          
           test("200: accepts sort_by query that defaults order to descending", () => {
             return request(app)
               .get("/api/reviews?sort_by=designer")
@@ -291,7 +287,7 @@ describe("app", () => {
                 });
               });
           });
-        }); */
+        });
       });
       describe("/:review_id", () => {
         describe("GET: /api/reviews/:review_id", () => {
@@ -399,7 +395,7 @@ describe("app", () => {
           });
         });
 
-        /* describe("/comments", () => {
+        describe("/comments", () => {
           describe("GET: /api/reviews/:review_id/comments", () => {
             test("200: responds with an array of comment objects", () => {
               return request(app)
@@ -457,8 +453,6 @@ describe("app", () => {
                 });
             });
           });
-        }); */
-        /* describe("/comments", () => {
           describe("POST: /api/reviews/:review_id/comments", () => {
             test("201: responds with comment object that has been added to database", () => {
               const commentToPost = {
@@ -500,11 +494,10 @@ describe("app", () => {
                     review_id: 1,
                     created_at: expect.any(String),
                   });
-               
                 });
             });
           });
-        }); */
+        });
       });
       describe("Endpoint Error Handling", () => {
         test("404: returns error message when passed category query that does not exist", () => {
@@ -515,10 +508,40 @@ describe("app", () => {
               expect(message).toBe("Not found");
             });
         });
+        test("400: returns error message when passed invalid sort_by query value", () => {
+          return request(app)
+            .get("/api/reviews?sort_by=not_a_column")
+            .expect(400)
+            .then(({ body: { message } }) => {
+              expect(message).toBe("Bad request");
+            });
+        });
+        test("400: returns error message when passed invalid order query value", () => {
+          return request(app)
+            .get("/api/reviews?order=not_asc")
+            .expect(400)
+            .then(({ body: { message } }) => {
+              expect(message).toBe("Bad request");
+            });
+        });
+        test("400: returns error message when one of multiple queries has invalid value", () => {
+          return request(app)
+            .get(
+              "/api/reviews?category=social%20deduction&sort_by=review_body&order=not_asc"
+            )
+            .expect(400)
+            .then(({ body: { message } }) => {
+              expect(message).toBe("Bad request");
+            });
+        });
         describe("/reviews/:review_id", () => {
           test("400: responds with error when passed an invalid review id", () => {
             const decReviewVotes = {
               inc_votes: -3,
+            };
+            const commentToPost = {
+              username: "mallionaire",
+              body: "I love this game!",
             };
 
             return request(app)
@@ -535,11 +558,32 @@ describe("app", () => {
               })
               .then(({ body: { message } }) => {
                 expect(message).toBe("Bad request");
+              })
+              .then(() => {
+                return request(app)
+                  .get("/api/reviews/notAnId/comments")
+                  .expect(400)
+                  .then(({ body: { message } }) => {
+                    expect(message).toBe("Bad request");
+                  });
+              })
+              .then(() => {
+                return request(app)
+                  .post("/api/reviews/notAnId/comments")
+                  .send(commentToPost)
+                  .expect(400)
+                  .then(({ body: { message } }) => {
+                    expect(message).toBe("Bad request");
+                  });
               });
           });
           test("404: responds with error when passed review id that does not exist", () => {
             const decReviewVotes = {
               inc_votes: -3,
+            };
+            const commentToPost = {
+              username: "mallionaire",
+              body: "I love this game!",
             };
 
             return request(app)
@@ -556,6 +600,23 @@ describe("app", () => {
               })
               .then(({ body: { message } }) => {
                 expect(message).toBe("Review not found");
+              })
+              .then(() => {
+                return request(app)
+                  .get("/api/reviews/100/comments")
+                  .expect(404)
+                  .then(({ body: { message } }) => {
+                    expect(message).toBe("Review not found");
+                  });
+              })
+              .then(() => {
+                return request(app)
+                  .post("/api/reviews/100/comments")
+                  .send(commentToPost)
+                  .expect(404)
+                  .then(({ body: { message } }) => {
+                    expect(message).toBe("Not found");
+                  });
               });
           });
           test("400: responds with error when body is missing required fields in patch request", () => {
@@ -582,172 +643,58 @@ describe("app", () => {
                 expect(message).toBe("Bad request");
               });
           });
-        });
+          describe("/comments", () => {
+            test("404: responds with error when passed a route that does not exist", () => {
+              const commentToPost = {
+                username: "mallionaire",
+                body: "I love this game!",
+              };
+              return request(app)
+                .get("/api/reviews/1/notcomments")
+                .expect(404)
+                .then(({ body }) => {
+                  expect(body.message).toBe("Invalid route");
+                })
+                .then(() => {
+                  return request(app)
+                    .post("/api/reviews/1/notcomments")
+                    .send(commentToPost)
+                    .expect(404);
+                })
+                .then(({ body }) => {
+                  expect(body.message).toBe("Invalid route");
+                });
+            });
 
-        /* describe("Error Handling", () => {
-          
-          test("400: returns error message when passed invalid sort_by query value", () => {
-            return request(app)
-              .get("/api/reviews?sort_by=not_a_column")
-              .expect(400)
-              .then(({ body: { message } }) => {
-                expect(message).toBe("Bad request");
-              });
-          });
-          test("400: returns error message when passed invalid order query value", () => {
-            return request(app)
-              .get("/api/reviews?order=not_asc")
-              .expect(400)
-              .then(({ body: { message } }) => {
-                expect(message).toBe("Bad request");
-              });
-          });
-          test("400: returns error message when one of multiple queries has invalid value", () => {
-            return request(app)
-              .get(
-                "/api/reviews?category=social%20deduction&sort_by=review_body&order=not_asc"
-              )
-              .expect(400)
-              .then(({ body: { message } }) => {
-                expect(message).toBe("Bad request");
-              });
-          });
-        });
-        describe("Error Handling", () => {
-          test("400: responds with error when passed an invalid id", () => {
-            const commentToPost = {
-              username: "mallionaire",
-              body: "I love this game!",
-            };
+            test("400: responds with error when post body missing required fields", () => {
+              const commentToPost = {
+                body: "I love this game!",
+              };
 
-            return request(app)
-              .post("/api/reviews/notAnId/comments")
-              .send(commentToPost)
-              .expect(400)
-              .then(({ body: { message } }) => {
-                expect(message).toBe("Bad request");
-              });
-          });
-          test("400: responds with error when post body missing required fields", () => {
-            const commentToPost = {
-              body: "I love this game!",
-            };
+              return request(app)
+                .post("/api/reviews/1/comments")
+                .send(commentToPost)
+                .expect(400)
+                .then(({ body: { message } }) => {
+                  expect(message).toBe("Bad request");
+                });
+            });
+            test("404: responds with error when given username does not exist in the database for post request", () => {
+              const commentToPost = {
+                username: "teyahbd",
+                body: "I love this game!",
+              };
 
-            return request(app)
-              .post("/api/reviews/1/comments")
-              .send(commentToPost)
-              .expect(400)
-              .then(({ body: { message } }) => {
-                expect(message).toBe("Bad request");
-              });
-          });
-          test("404: responds with error when given username does not exist in the database", () => {
-            const commentToPost = {
-              username: "teyahbd",
-              body: "I love this game!",
-            };
-
-            return request(app)
-              .post("/api/reviews/1/comments")
-              .send(commentToPost)
-              .expect(404)
-              .then(({ body: { message } }) => {
-                expect(message).toBe("Not found");
-              });
-          });
-          test("404: responds with error when passed id that does not exist", () => {
-            const commentToPost = {
-              username: "mallionaire",
-              body: "I love this game!",
-            };
-
-            return request(app)
-              .post("/api/reviews/100/comments")
-              .send(commentToPost)
-              .expect(404)
-              .then(({ body: { message } }) => {
-                expect(message).toBe("Not found");
-              });
+              return request(app)
+                .post("/api/reviews/1/comments")
+                .send(commentToPost)
+                .expect(404)
+                .then(({ body: { message } }) => {
+                  expect(message).toBe("Not found");
+                });
+            });
           });
         });
-        describe("Error Handling", () => {
-          test("400: responds with error when passed an invalid id", () => {
-            return request(app)
-              .get("/api/reviews/notAnId/comments")
-              .expect(400)
-              .then(({ body: { message } }) => {
-                expect(message).toBe("Bad request");
-              });
-          });
-          test("404: responds with error when passed id that does not exist", () => {
-            return request(app)
-              .get("/api/reviews/100/comments")
-              .expect(404)
-              .then(({ body: { message } }) => {
-                expect(message).toBe("Review not found");
-              });
-          });
-        });
-      });
-      describe(" Endpoint Error Handling", () => {
-        describe("Error Handling", () => {
-          test("400: responds with error when passed an invalid id", () => {
-            const commentToPost = {
-              username: "mallionaire",
-              body: "I love this game!",
-            };
-
-            return request(app)
-              .post("/api/reviews/notAnId/comments")
-              .send(commentToPost)
-              .expect(400)
-              .then(({ body: { message } }) => {
-                expect(message).toBe("Bad request");
-              });
-          });
-          test("400: responds with error when post body missing required fields", () => {
-            const commentToPost = {
-              body: "I love this game!",
-            };
-
-            return request(app)
-              .post("/api/reviews/1/comments")
-              .send(commentToPost)
-              .expect(400)
-              .then(({ body: { message } }) => {
-                expect(message).toBe("Bad request");
-              });
-          });
-          test("404: responds with error when given username does not exist in the database", () => {
-            const commentToPost = {
-              username: "teyahbd",
-              body: "I love this game!",
-            };
-
-            return request(app)
-              .post("/api/reviews/1/comments")
-              .send(commentToPost)
-              .expect(404)
-              .then(({ body: { message } }) => {
-                expect(message).toBe("Not found");
-              });
-          });
-          test("404: responds with error when passed id that does not exist", () => {
-            const commentToPost = {
-              username: "mallionaire",
-              body: "I love this game!",
-            };
-
-            return request(app)
-              .post("/api/reviews/100/comments")
-              .send(commentToPost)
-              .expect(404)
-              .then(({ body: { message } }) => {
-                expect(message).toBe("Not found");
-              });
-          });
-          
-        }); */
       });
     });
     describe("General Error Handling ", () => {
