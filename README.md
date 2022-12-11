@@ -1,6 +1,8 @@
-# Northcoders House of Games API
+# Game Reviews API
 
 ## About
+
+This project was completed as part of the Northcoders software developer bootcamp.
 
 ## Getting Started
 
