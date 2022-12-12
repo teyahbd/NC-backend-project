@@ -9,58 +9,61 @@
       rel="icon"
       href="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/240/microsoft/319/game-die_1f3b2.png"
     />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
     <title>About | Game Reviews API</title>
   </head>
   <body style="background-color: #8cf5ff">
-    <h1
-      style="
-        color: #ffffff;
-        font-family: 'Fugaz One', cursive;
-        text-shadow: 4px 4px #ff69b4;
-        font-size: 4rem;
-        padding: 0;
-      "
-    >
-      Game Reviews API
-    </h1>
-    <p style="color: #ff69b4">By Teyah Brennen-Davies</p>
-    <div
-      style="
-        box-shadow: #ff69b4 0px 3px 8px;
-        background-color: white;
-        height: 50vh;
-        width: 80vh;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: space-between;
-        box-sizing: border-box;
-        padding: 2rem;
-      "
-    >
-      <div id="text-container display:flex; justify-content: flex-start">
-        <h2
-          style="color: #ff69b4; text-shadow: 3px 3px #8cf5ff; font-size: 2rem"
-        >
-          ABOUT
-        </h2>
+    <h1 id="title">Game Reviews API</h1>
+    <div id="personal-info">
+      <a href="https://github.com/teyahbd"
+        ><i class="fa fa-github social-button" style="font-size: 36px"></i
+      ></a>
+      <h3>By Teyah Brennen-Davies</h3>
+      <a href="https://www.linkedin.com/in/teyah-brennen-davies/"
+        ><i
+          class="fa fa-linkedin-square social-button"
+          style="font-size: 36px"
+        ></i
+      ></a>
+    </div>
+    <div id="text-box">
+      <section>
+        <h2>ABOUT</h2>
         <p>
-          This API forms part of my solo project from the Northcoders software
-          development bootcamp. The Github repo for this API can be found here.
+          This API forms part of my solo project created during the Northcoders
+          software development bootcamp. It is the backend for my "Game Reviews"
+          website, where users can post reviews of board games, vote on reviews,
+          leave comments and more.
         </p>
+
+        <p>
+          This is a REST API built using Node.js, Express and a PSQL database.
+          For more details on the development of this API, see the Github repo
+          hosted
+          <a
+            href="https://github.com/teyahbd/nc-games-reviews-api"
+            class="inline-links"
+            >here</a
+          >. The frontend of this project is hosted
+          <a class="inline-links">here</a> at the time of writing.
+        </p>
+
         <p>
           You can find the docs containing all possible endpoints here at /docs
           and the api is hosted at /api.
         </p>
-      </div>
-
-      <div
-        id="button-container"
-        class="display:flex; justify-content: space-between"
-      >
-        <a href="/docs"><button type="button">Go to the docs</button></a>
-        <a href="/api"><button type="button">Go to the API</button></a>
-      </div>
+      </section>
+      <footer>
+        <a href="/docs"
+          ><button type="button" class="links">See the docs!</button></a
+        >
+        <a href="/api"
+          ><button type="button" class="links">See the API!</button></a
+        >
+      </footer>
     </div>
   </body>
 </html>
