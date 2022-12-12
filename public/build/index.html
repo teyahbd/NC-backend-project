@@ -4,20 +4,63 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>~NC Games API</title>
+    <link rel="stylesheet" href="build/css/styles.css" />
+    <link
+      rel="icon"
+      href="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/240/microsoft/319/game-die_1f3b2.png"
+    />
+    <title>About | Game Reviews API</title>
   </head>
-  <body>
-    <h1>NC Game Reviews API</h1>
-    <h3>By Teyah Brennen-Davies</h3>
+  <body style="background-color: #8cf5ff">
+    <h1
+      style="
+        color: #ffffff;
+        font-family: 'Fugaz One', cursive;
+        text-shadow: 4px 4px #ff69b4;
+        font-size: 4rem;
+        padding: 0;
+      "
+    >
+      Game Reviews API
+    </h1>
+    <p style="color: #ff69b4">By Teyah Brennen-Davies</p>
+    <div
+      style="
+        box-shadow: #ff69b4 0px 3px 8px;
+        background-color: white;
+        height: 50vh;
+        width: 80vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-between;
+        box-sizing: border-box;
+        padding: 2rem;
+      "
+    >
+      <div id="text-container display:flex; justify-content: flex-start">
+        <h2
+          style="color: #ff69b4; text-shadow: 3px 3px #8cf5ff; font-size: 2rem"
+        >
+          ABOUT
+        </h2>
+        <p>
+          This API forms part of my solo project from the Northcoders software
+          development bootcamp. The Github repo for this API can be found here.
+        </p>
+        <p>
+          You can find the docs containing all possible endpoints here at /docs
+          and the api is hosted at /api.
+        </p>
+      </div>
 
-    <h2>About</h2>
-    <p>
-      This API forms part of my solo project from the Northcoders software
-      development bootcamp. The Github repo for this API can be found here.
-    </p>
-    <p>
-      You can find the docs containing all possible endpoints here at /docs and
-      the api is hosted at /api.
-    </p>
+      <div
+        id="button-container"
+        class="display:flex; justify-content: space-between"
+      >
+        <a href="/docs"><button type="button">Go to the docs</button></a>
+        <a href="/api"><button type="button">Go to the API</button></a>
+      </div>
+    </div>
   </body>
 </html>

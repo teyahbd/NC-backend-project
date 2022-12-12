@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="build/css/styles.css" />
+    <link
+      rel="icon"
+      href="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/240/microsoft/319/game-die_1f3b2.png"
+    />
+    <!-- Lightweight client-side loader that feature-detects and load polyfills only when necessary -->
+    <script src="https://cdn.jsdelivr.net/npm/@webcomponents/webcomponentsjs@2/webcomponents-loader.min.js"></script>
+    <!-- Load the element definition -->
+    <script
+      type="module"
+      src="https://cdn.jsdelivr.net/gh/zerodevx/zero-md@1/src/zero-md.min.js"
+    ></script>
+    <title>Docs | Game Reviews API</title>
+  </head>
+  <body
+    style="
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI',
+        Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue',
+        sans-serif;
+      padding: 0;
+      margin: 0;
+    "
+  >
+    <div class="sidenav">
+      <p>API Endpoints</p>
+      <details>
+        <summary>Categories</summary>
+        <p>GET /categories</p>
+      </details>
+      <a href="#">Categories</a>
+      <a href="#">Comments</a>
+      <a href="#">Reviews</a>
+      <a href="#">Users</a>
+    </div>
+    <h1
+      style="
+        color: #8cf5ff;
+        font-family: 'Fugaz One', cursive;
+        text-shadow: 4px 4px #ff69b4;
+        font-size: 4rem;
+        padding: 0;
+      "
+    >
+      Game Reviews API
+    </h1>
+    <p style="color: #ff69b4">By Teyah Brennen-Davies</p>
+    <div id="text-container display:flex; justify-content: flex-start">
+      <h2 style="color: #ff69b4; text-shadow: 3px 3px #8cf5ff; font-size: 2rem">
+        API Endpoints
+      </h2>
+      <zero-md src="build/docs/get-categories.md"></zero-md>
+    </div>
+  </body>
+</html>
