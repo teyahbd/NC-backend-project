@@ -9,55 +9,156 @@
       rel="icon"
       href="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/240/microsoft/319/game-die_1f3b2.png"
     />
-    <!-- Lightweight client-side loader that feature-detects and load polyfills only when necessary -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
     <script src="https://cdn.jsdelivr.net/npm/@webcomponents/webcomponentsjs@2/webcomponents-loader.min.js"></script>
-    <!-- Load the element definition -->
     <script
       type="module"
       src="https://cdn.jsdelivr.net/gh/zerodevx/zero-md@1/src/zero-md.min.js"
     ></script>
+    <script type="text/javascript">
+      function changeMarkdown(filename, category) {
+        if (filename === "home") {
+          document.getElementById(
+            "testing"
+          ).innerHTML = `<zero-md id="test" src="build/docs/home.md"></zero-md>`;
+          document.getElementById(
+            "breadcrumb"
+          ).innerHTML = `<li>Docs Home</li>`;
+        } else if (filename === category) {
+          document.getElementById(
+            "testing"
+          ).innerHTML = `<zero-md id="test" src="build/docs/${category}/${filename}.md"></zero-md>`;
+          document.getElementById(
+            "breadcrumb"
+          ).innerHTML = `<li><a href="/docs">Docs Home</a></li>
+            <li>${category}</li>`;
+        } else {
+          document.getElementById(
+            "testing"
+          ).innerHTML = `<zero-md id="test" src="build/docs/${category}/${filename}.md"></zero-md>`;
+          document.getElementById(
+            "breadcrumb"
+          ).innerHTML = `<li><a href="/docs">Docs Home</a></li>
+            <li><a onclick="changeMarkdown('${category}', '${category}')">${category}</a></li><li>${filename}</li>`;
+        }
+      }
+    </script>
     <title>Docs | Game Reviews API</title>
   </head>
-  <body
-    style="
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI',
-        Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue',
-        sans-serif;
-      padding: 0;
-      margin: 0;
-    "
-  >
-    <div class="sidenav">
-      <p>API Endpoints</p>
+  <body style="flex-direction: row; background-color: white">
+    <aside id="sidebar">
+      <a id="sidebar-title" onclick="changeMarkdown('home')">
+        <h3 id="sidebar-title-api">Game Reviews API</h3>
+        <p id="sidebar-title-docs" class="white">DOCS</p>
+      </a>
+      <p style="font-size: 2rem; color: #ff69b4">API Endpoints</p>
       <details>
-        <summary>Categories</summary>
-        <p>GET /categories</p>
+        <summary>
+          <a onclick="changeMarkdown('general', 'general')">General</a>
+        </summary>
+        <ul style="list-style-type: none; padding: 0; margin: 0">
+          <li>
+            <a onclick="changeMarkdown('get-api', 'general')">GET /api</a>
+          </li>
+        </ul>
       </details>
-      <a href="#">Categories</a>
-      <a href="#">Comments</a>
-      <a href="#">Reviews</a>
-      <a href="#">Users</a>
-    </div>
-    <h1
-      style="
-        color: #8cf5ff;
-        font-family: 'Fugaz One', cursive;
-        text-shadow: 4px 4px #ff69b4;
-        font-size: 4rem;
-        padding: 0;
-      "
-    >
-      Game Reviews API
-    </h1>
-    <p style="color: #ff69b4">By Teyah Brennen-Davies</p>
-    <div id="text-container display:flex; justify-content: flex-start">
-      <h2 style="color: #ff69b4; text-shadow: 3px 3px #8cf5ff; font-size: 2rem">
-        API Endpoints
-      </h2>
-      <zero-md src="build/docs/get-categories.md"></zero-md>
+      <details>
+        <summary>
+          <a onclick="changeMarkdown('categories', 'categories')">Categories</a>
+        </summary>
+        <ul style="list-style-type: none; padding: 0; margin: 0">
+          <li>
+            <a onclick="changeMarkdown('get-categories', 'categories')"
+              >GET /categories</a
+            >
+          </li>
+        </ul>
+      </details>
+      <details>
+        <summary>
+          <a onclick="changeMarkdown('comments', 'comments')">Comments</a>
+        </summary>
+        <ul style="list-style-type: none; padding: 0; margin: 0">
+          <li>
+            <a onclick="changeMarkdown('get-comments', 'comments')"
+              >GET comment by review id</a
+            >
+          </li>
+          <li>
+            <a onclick="changeMarkdown('delete-comments', 'comments')"
+              >DELETE comment by comment id</a
+            >
+          </li>
+          <li>
+            <a onclick="changeMarkdown('post-comments', 'comments')"
+              >POST comment by review id</a
+            >
+          </li>
+        </ul>
+      </details>
+      <details>
+        <summary>
+          <a onclick="changeMarkdown('reviews', 'reviews')">Reviews</a>
+        </summary>
+        <ul style="list-style-type: none; padding: 0; margin: 0">
+          <li>
+            <a onclick="changeMarkdown('get-reviews', 'reviews')"
+              >GET /reviews</a
+            >
+          </li>
+          <li>
+            <a onclick="changeMarkdown('get-review-by-id', 'reviews')"
+              >GET /reviews/:review_id</a
+            >
+          </li>
+          <li>
+            <a onclick="changeMarkdown('patch-review', 'reviews')"
+              >PATCH /reviews/:review_id/comments</a
+            >
+          </li>
+        </ul>
+      </details>
+      <details>
+        <summary>
+          <a onclick="changeMarkdown('users', 'users')">Users</a>
+        </summary>
+        <ul style="list-style-type: none; padding: 0; margin: 0">
+          <li>
+            <a onclick="changeMarkdown('get-users', 'users')">GET /users</a>
+          </li>
+        </ul>
+      </details>
+    </aside>
+    <div id="docs-page">
+      <header>
+        <a href="/" style="text-decoration: none"
+          ><h1 style="margin-top: 1rem">Game Reviews API</h1></a
+        >
+        <div id="personal-info">
+          <a href="https://github.com/teyahbd"
+            ><i class="fa fa-github social-button" style="font-size: 36px"></i
+          ></a>
+          <h3>By Teyah Brennen-Davies</h3>
+          <a href="https://www.linkedin.com/in/teyah-brennen-davies/"
+            ><i
+              class="fa fa-linkedin-square social-button"
+              style="font-size: 36px"
+            ></i
+          ></a>
+        </div>
+      </header>
+      <main>
+        <ul id="breadcrumb" class="breadcrumb">
+          <li>Docs Home</li>
+        </ul>
+        <h2 id="docs-title">API Endpoints</h2>
+        <div id="testing">
+          <zero-md id="test" src="build/docs/home.md"></zero-md>
+        </div>
+      </main>
     </div>
   </body>
 </html>
