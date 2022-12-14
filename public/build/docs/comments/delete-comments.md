@@ -1,3 +1,11 @@
-# DELETE /comments/:comment_id
+# DELETE /api/comments/:comment_id
 
-Responds with something.
+Deletes the requested comment.
+
+## Examples
+
+### Response
+
+Status 204 - No Content
+
+No body is returned by this endpoint.

@@ -61,49 +61,62 @@
         </p>
         <p id="sidebar-title-docs">DOCS</p>
       </a>
-      <a
-        ><p
-          style="
-            font-size: 1.7rem;
-            color: white;
-            text-align: center;
-            font-weight: bold;
-            background-color: #eee;
-            padding-top: 0.3rem;
-            padding-bottom: 0.3rem;
-          "
-        >
-          API Endpoints
-        </p></a
+      <p
+        style="
+          font-size: 1.7rem;
+          color: white;
+          text-align: center;
+          font-weight: bold;
+          background-color: #eee;
+          padding-top: 0.3rem;
+          padding-bottom: 0.3rem;
+        "
       >
-      <h3>GENERAL</h3>
+        API Endpoints
+      </p>
+
       <ul style="list-style-type: none; padding: 0; margin: 0">
         <li class="sidebar-dropdown">
-          <a onclick="changeMarkdown('get-api', 'general')">GET /api</a>
+          <p>GET</p>
+          <a onclick="changeMarkdown('get-api', 'general')">/api</a>
         </li>
-      </ul>
-      <h3>CATEGORIES</h3>
-      <ul style="list-style-type: none; padding: 0; margin: 0">
+        <li><h3>CATEGORIES</h3></li>
+        <li><p>GET</p></li>
         <li id="get-categories" class="sidebar-dropdown">
           <a onclick="changeMarkdown('get-categories', 'categories')"
-            >GET /categories</a
+            >/api/categories</a
+          >
+        </li>
+        <li class="sidebar-dropdown">
+          <a onclick="changeMarkdown('get-category-by-slug', 'categories')"
+            >/api/categories/:slug</a
+          >
+        </li>
+        <li><h3>COMMENTS</h3></li>
+        <li><p>GET</p></li>
+        <li class="sidebar-dropdown">
+          <a onclick="changeMarkdown('get-comment-by-commentid', 'comments')"
+            >/api/comment/:comment_id</a
+          >
+        </li>
+        <li><p>DELETE</p></li>
+        <li class="sidebar-dropdown">
+          <a onclick="changeMarkdown('delete-comments', 'comments')"
+            >/api/comment/:comment_id</a
           >
         </li>
       </ul>
+
       <h3>COMMENTS</h3>
       <ul style="list-style-type: none; padding: 0; margin: 0">
         <li id="get-comments" class="sidebar-dropdown">
-          <a onclick="changeMarkdown('get-comments', 'comments')"
+          <a onclick="changeMarkdown('get-comments-by-reviewid', 'comments')"
             >GET comment by review id</a
           >
         </li>
+
         <li class="sidebar-dropdown">
-          <a onclick="changeMarkdown('delete-comments', 'comments')"
-            >DELETE comment by comment id</a
-          >
-        </li>
-        <li class="sidebar-dropdown">
-          <a onclick="changeMarkdown('post-comments', 'comments')"
+          <a onclick="changeMarkdown('post-comment', 'comments')"
             >POST comment by review id</a
           >
         </li>
