@@ -24,16 +24,14 @@
           document.getElementById(
             "testing"
           ).innerHTML = `<zero-md id="test" src="build/docs/home.md"></zero-md>`;
-          document.getElementById(
-            "breadcrumb"
-          ).innerHTML = `<li>Docs Home</li>`;
+          document.getElementById("breadcrumb").innerHTML = `<li>Home</li>`;
         } else if (filename === category) {
           document.getElementById(
             "testing"
           ).innerHTML = `<zero-md id="test" src="build/docs/${category}/${filename}.md"></zero-md>`;
           document.getElementById(
             "breadcrumb"
-          ).innerHTML = `<li><a href="/docs">Docs Home</a></li>
+          ).innerHTML = `<li><a href="/docs">Home</a></li>
             <li>${category}</li>`;
         } else {
           document.getElementById(
@@ -41,8 +39,12 @@
           ).innerHTML = `<zero-md id="test" src="build/docs/${category}/${filename}.md"></zero-md>`;
           document.getElementById(
             "breadcrumb"
-          ).innerHTML = `<li><a href="/docs">Docs Home</a></li>
+          ).innerHTML = `<li><a href="/docs">Home</a></li>
             <li><a onclick="changeMarkdown('${category}', '${category}')">${category}</a></li><li>${filename}</li>`;
+          document.getElementById(`${filename}`).style.backgroundColor =
+            "white";
+          document.getElementById(`get-categories`).style.backgroundColor =
+            "#8cf5ff";
         }
       }
     </script>
@@ -51,110 +53,89 @@
   <body style="flex-direction: row; background-color: white">
     <aside id="sidebar">
       <a id="sidebar-title" onclick="changeMarkdown('home')">
-        <h3 id="sidebar-title-api">Game Reviews API</h3>
-        <p id="sidebar-title-docs" class="white">DOCS</p>
+        <p
+          id="sidebar-title-api"
+          style="font-family: 'Fugaz One', cursive; font-size: 1rem"
+        >
+          Game Reviews API
+        </p>
+        <p id="sidebar-title-docs">DOCS</p>
       </a>
-      <p style="font-size: 2rem; color: #ff69b4">API Endpoints</p>
-      <details>
-        <summary>
-          <a onclick="changeMarkdown('general', 'general')">General</a>
-        </summary>
-        <ul style="list-style-type: none; padding: 0; margin: 0">
-          <li>
-            <a onclick="changeMarkdown('get-api', 'general')">GET /api</a>
-          </li>
-        </ul>
-      </details>
-      <details>
-        <summary>
-          <a onclick="changeMarkdown('categories', 'categories')">Categories</a>
-        </summary>
-        <ul style="list-style-type: none; padding: 0; margin: 0">
-          <li>
-            <a onclick="changeMarkdown('get-categories', 'categories')"
-              >GET /categories</a
-            >
-          </li>
-        </ul>
-      </details>
-      <details>
-        <summary>
-          <a onclick="changeMarkdown('comments', 'comments')">Comments</a>
-        </summary>
-        <ul style="list-style-type: none; padding: 0; margin: 0">
-          <li>
-            <a onclick="changeMarkdown('get-comments', 'comments')"
-              >GET comment by review id</a
-            >
-          </li>
-          <li>
-            <a onclick="changeMarkdown('delete-comments', 'comments')"
-              >DELETE comment by comment id</a
-            >
-          </li>
-          <li>
-            <a onclick="changeMarkdown('post-comments', 'comments')"
-              >POST comment by review id</a
-            >
-          </li>
-        </ul>
-      </details>
-      <details>
-        <summary>
-          <a onclick="changeMarkdown('reviews', 'reviews')">Reviews</a>
-        </summary>
-        <ul style="list-style-type: none; padding: 0; margin: 0">
-          <li>
-            <a onclick="changeMarkdown('get-reviews', 'reviews')"
-              >GET /reviews</a
-            >
-          </li>
-          <li>
-            <a onclick="changeMarkdown('get-review-by-id', 'reviews')"
-              >GET /reviews/:review_id</a
-            >
-          </li>
-          <li>
-            <a onclick="changeMarkdown('patch-review', 'reviews')"
-              >PATCH /reviews/:review_id/comments</a
-            >
-          </li>
-        </ul>
-      </details>
-      <details>
-        <summary>
-          <a onclick="changeMarkdown('users', 'users')">Users</a>
-        </summary>
-        <ul style="list-style-type: none; padding: 0; margin: 0">
-          <li>
-            <a onclick="changeMarkdown('get-users', 'users')">GET /users</a>
-          </li>
-        </ul>
-      </details>
+      <a
+        ><p
+          style="
+            font-size: 1.7rem;
+            color: white;
+            text-align: center;
+            font-weight: bold;
+            background-color: #eee;
+            padding-top: 0.3rem;
+            padding-bottom: 0.3rem;
+          "
+        >
+          API Endpoints
+        </p></a
+      >
+      <h3>GENERAL</h3>
+      <ul style="list-style-type: none; padding: 0; margin: 0">
+        <li class="sidebar-dropdown">
+          <a onclick="changeMarkdown('get-api', 'general')">GET /api</a>
+        </li>
+      </ul>
+      <h3>CATEGORIES</h3>
+      <ul style="list-style-type: none; padding: 0; margin: 0">
+        <li id="get-categories" class="sidebar-dropdown">
+          <a onclick="changeMarkdown('get-categories', 'categories')"
+            >GET /categories</a
+          >
+        </li>
+      </ul>
+      <h3>COMMENTS</h3>
+      <ul style="list-style-type: none; padding: 0; margin: 0">
+        <li id="get-comments" class="sidebar-dropdown">
+          <a onclick="changeMarkdown('get-comments', 'comments')"
+            >GET comment by review id</a
+          >
+        </li>
+        <li class="sidebar-dropdown">
+          <a onclick="changeMarkdown('delete-comments', 'comments')"
+            >DELETE comment by comment id</a
+          >
+        </li>
+        <li class="sidebar-dropdown">
+          <a onclick="changeMarkdown('post-comments', 'comments')"
+            >POST comment by review id</a
+          >
+        </li>
+      </ul>
+      <h3>REVIEWS</h3>
+      <ul style="list-style-type: none; padding: 0; margin: 0">
+        <li class="sidebar-dropdown">
+          <a onclick="changeMarkdown('get-reviews', 'reviews')">GET /reviews</a>
+        </li>
+        <li class="sidebar-dropdown">
+          <a onclick="changeMarkdown('get-review-by-id', 'reviews')"
+            >GET /reviews/:review_id</a
+          >
+        </li>
+        <li class="sidebar-dropdown">
+          <a onclick="changeMarkdown('patch-review', 'reviews')"
+            >PATCH /reviews/:review_id/comments</a
+          >
+        </li>
+      </ul>
+      <h3>USERS</h3>
+      <ul style="list-style-type: none; padding: 0; margin: 0">
+        <li class="sidebar-dropdown">
+          <a onclick="changeMarkdown('get-users', 'users')">GET /users</a>
+        </li>
+      </ul>
     </aside>
     <div id="docs-page">
-      <header>
-        <a href="/" style="text-decoration: none"
-          ><h1 style="margin-top: 1rem">Game Reviews API</h1></a
-        >
-        <div id="personal-info">
-          <a href="https://github.com/teyahbd"
-            ><i class="fa fa-github social-button" style="font-size: 36px"></i
-          ></a>
-          <h3>By Teyah Brennen-Davies</h3>
-          <a href="https://www.linkedin.com/in/teyah-brennen-davies/"
-            ><i
-              class="fa fa-linkedin-square social-button"
-              style="font-size: 36px"
-            ></i
-          ></a>
-        </div>
-      </header>
       <main>
         <ul id="breadcrumb" class="breadcrumb">
-          <li>Docs Home</li>
+          <li>Home</li>
         </ul>
-        <h2 id="docs-title">API Endpoints</h2>
         <div id="testing">
           <zero-md id="test" src="build/docs/home.md"></zero-md>
         </div>
