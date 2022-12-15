@@ -136,6 +136,7 @@ footer {
   padding-right: 1rem;
   display: flex;
   justify-content: flex-end;
+  max-height: 85px;
 }
 
 #docs-title {
@@ -151,6 +152,11 @@ footer {
 
 #docs-title > a {
   cursor: pointer;
+}
+
+#mobile-nav-button {
+  display: none;
+  color: white;
 }
 
 /* Docs Main Page */
@@ -181,7 +187,7 @@ zero-md {
 
 /* Docs Sidebar */
 
-#web-sidebar {
+nav {
   width: 350px;
   background-color: #ff69b4;
   padding: 1rem;
@@ -189,27 +195,28 @@ zero-md {
   color: white;
   height: 100%;
   border-bottom-right-radius: 5px;
+  height: 100vh;
 }
 
-#web-sidebar > h2:hover {
+nav > h2:hover {
   color: #8cf5ff;
 }
 
-#web-sidebar > ul {
+nav > ul {
   padding-left: 1rem;
 }
 
-#web-sidebar > ul > li {
+nav > ul > li {
   cursor: pointer;
   transition-duration: 0.2s;
   margin-bottom: 0.8rem;
 }
 
-#web-sidebar > ul > li:hover {
+nav > ul > li:hover {
   color: #8cf5ff;
 }
 
-#web-sidebar > h3 {
+nav > h3 {
   font-size: 1.5rem;
   font-weight: 300;
   margin-bottom: 1.5rem;
@@ -220,17 +227,44 @@ zero-md {
   border-radius: 5px;
 }
 
+#mobile-sidebar {
+  width: 250px;
+  position: absolute;
+  display: none;
+  top: 80px;
+  z-index: 1;
+  height: fit-content;
+}
+
 /* Mobile */
+
+.hamburger-menu {
+  width: 35px;
+  height: 5px;
+  background-color: white;
+  margin: 6px 0;
+  transition-duration: 0.2s;
+}
+
+#mobile-nav-button {
+  padding: 1rem;
+}
 
 @media only screen and (max-width: 850px) {
   #page-title {
-    text-align: right;
-    font-size: 3rem;
+    display: inline;
   }
-  nav {
+  #sidebar {
     display: none;
   }
   zero-md {
     width: 80vw;
+  }
+  #mobile-nav-button {
+    display: inline;
+  }
+  #docs-header {
+    justify-content: space-between;
+    align-items: center;
   }
 }

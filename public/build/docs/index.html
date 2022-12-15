@@ -23,10 +23,27 @@
           ).innerHTML = `<a href="/docs" id="docs-home-link" class="inline-links">< Back to Docs Home</a><zero-md id="test" src="build/docs/${category}/${filename}.md"></zero-md>`;
         }
     </script>
+    <script type="text/javascript">
+      let closed = true;
+      window.addEventListener('resize', function(event) {
+        document.getElementById("mobile-sidebar").style.display = "none";
+        closed = true
+      }, true);
+      
+      function openMenu() {
+        if (closed === true) {
+          document.getElementById("mobile-sidebar").style.display = "block";
+          closed = false;
+        } else {
+          document.getElementById("mobile-sidebar").style.display = "none";
+          closed = true;
+        }
+      }
+    </script>
     <title>Docs | Game Reviews API</title>
   </head>
   <body style="flex-direction: row; justify-content: space-between">
-      <nav id="web-sidebar">
+      <nav id="sidebar">
         <h2><a href="/docs">DOCS</a></h2>
         <h3>/API ENDPOINTS</h3>
         <ul>
@@ -42,8 +59,27 @@
           <li style="margin-bottom: 2rem;"><a onclick="changeMarkdown('post-comment', 'reviews')"><p class="bold">POST</p><p>/reviews/:review_id/comments</p></a></li>
         </ul>
       </nav>
+      <nav id="mobile-sidebar">
+        <h3>/API ENDPOINTS</h3>
+        <ul>
+          <li><a onclick="changeMarkdown('get-api', 'general'); openMenu()"><p class="bold">GET</p><p>/</p></a></li>
+          <li><a onclick="changeMarkdown('get-categories', 'categories'); openMenu()"><p class="bold">GET</p><p>/categories</p></a></li>
+          <li><a onclick="changeMarkdown('get-category-by-slug', 'categories'); openMenu()"><p class="bold">GET</p><p>/categories/:slug</p></a></li>
+          <li><a onclick="changeMarkdown('get-comment-by-commentid', 'comments'); openMenu()"><p class="bold">GET</p><p>/comments/:comment_id</p></a></li>
+          <li><a onclick="changeMarkdown('delete-comment', 'comments'); openMenu()"><p class="bold">DELETE</p><p>/comments/:comment_id</p></a></li>
+          <li><a onclick="changeMarkdown('get-reviews', 'reviews'); openMenu()"><p class="bold">GET</p><p>/reviews</p></a></li>
+          <li><a onclick="changeMarkdown('get-review-by-id', 'reviews'); openMenu()"><p class="bold">GET</p><p>/reviews/:review_id</p></a></li>
+          <li><a onclick="changeMarkdown('patch-review', 'reviews'); openMenu()"><p class="bold">PATCH</p><p>/reviews/:review_id</p></a></li>
+          <li><a onclick="changeMarkdown('get-comments-by-reviewid', 'reviews'); openMenu()"><p class="bold">GET</p><p>/reviews/:review_id/comments</p></a></li>
+          <li style="margin-bottom: 2rem;"><a onclick="changeMarkdown('post-comment', 'reviews'); openMenu()"><p class="bold">POST</p><p>/reviews/:review_id/comments</p></a></li>
+        </ul>
+      </nav>
       <div id="main-page">
       <header id ="docs-header">
+        <a id="mobile-nav-button" onclick="openMenu()" onmouseover="addHoverColour()">
+          <div class="hamburger-menu"></div>
+          <div class="hamburger-menu"></div>
+          <div class="hamburger-menu"></div></a>
         <h1 id="docs-title"><a href="/">Game Reviews API</a></h1>
       </header>
       <article id="markdown-container"><zero-md src="build/docs/home.md" style="padding-top: 3rem"></zero-md></article>
