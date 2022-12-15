@@ -26,18 +26,11 @@ a {
 }
 
 ul {
-  list-style-type: none;
+  list-style-type: circle;
 }
 
 .bold {
   font-weight: bold;
-}
-
-.title {
-  color: #ffffff;
-  font-family: "Fugaz One", cursive;
-  text-shadow: 4px 4px #ff69b4;
-  font-size: 4rem;
 }
 
 h2 {
@@ -48,6 +41,13 @@ h2 {
 }
 
 /* About Page Header */
+
+#about-title {
+  color: #ffffff;
+  font-family: "Fugaz One", cursive;
+  text-shadow: 4px 4px #ff69b4;
+  font-size: 4rem;
+}
 
 #about-header {
   margin: 2rem;
@@ -130,66 +130,89 @@ footer {
 
 /* Docs Header */
 
-header {
-  background-color: #8cf5ff;
+#docs-header {
+  background-color: #ff69b4;
   padding: 0.5rem;
+  padding-right: 1rem;
+  display: flex;
+  justify-content: flex-end;
 }
 
-#page-title > a {
+#docs-title {
+  font-family: "Fugaz One", cursive;
+  color: white;
+  font-size: 3rem;
+}
+
+#mobile-docs-title {
+  padding-left: 2rem;
+  font-weight: 100;
+}
+
+#docs-title > a {
   cursor: pointer;
 }
 
 /* Docs Main Page */
 
-main {
+#main-page {
   display: flex;
-  height: 100%;
-  width: 100%;
-}
-
-#markdown-container {
+  flex-direction: column;
   width: 100%;
 }
 
 zero-md {
-  height: auto;
-  margin: 0 auto;
-  position: relative;
-  width: 65vw;
-  padding-top: 3rem;
+  width: 60vw;
+  padding-top: 2rem;
+  padding-left: 3rem;
+  padding-bottom: 4rem;
+}
+
+#markdown-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+#docs-home-link {
+  padding: 3rem;
+  padding-bottom: 0;
 }
 
 /* Docs Sidebar */
 
-nav {
-  width: 25vw;
+#web-sidebar {
+  width: 350px;
   background-color: #ff69b4;
   padding: 1rem;
-  padding-bottom: 1.5rem;
   text-align: left;
   color: white;
   height: 100%;
   border-bottom-right-radius: 5px;
 }
 
-nav > h2:hover {
+#web-sidebar > h2:hover {
   color: #8cf5ff;
 }
 
-nav > ul > li {
+#web-sidebar > ul {
+  padding-left: 1rem;
+}
+
+#web-sidebar > ul > li {
   cursor: pointer;
   transition-duration: 0.2s;
   margin-bottom: 0.8rem;
 }
 
-nav > ul > li:hover {
+#web-sidebar > ul > li:hover {
   color: #8cf5ff;
 }
 
-nav > h3 {
+#web-sidebar > h3 {
   font-size: 1.5rem;
   font-weight: 300;
-  margin-bottom: 0.7rem;
+  margin-bottom: 1.5rem;
   background-color: white;
   color: #ff69b4;
   padding: 0.3rem;
@@ -206,9 +229,6 @@ nav > h3 {
   }
   nav {
     display: none;
-  }
-  #markdown-container {
-    width: 100%;
   }
   zero-md {
     width: 80vw;

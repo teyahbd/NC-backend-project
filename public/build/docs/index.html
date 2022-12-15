@@ -18,25 +18,15 @@
     </script>
     <script type="text/javascript">
       function changeMarkdown(filename, category) {
-        if (filename === "home") {
           document.getElementById(
             "markdown-container"
-          ).innerHTML = `<zero-md id="test" src="build/docs/home.md"></zero-md>`;
-        } else {
-          document.getElementById(
-            "markdown-container"
-          ).innerHTML = `<zero-md id="test" src="build/docs/${category}/${filename}.md"></zero-md>`;
+          ).innerHTML = `<a href="/docs" id="docs-home-link" class="inline-links">< Back to Docs Home</a><zero-md id="test" src="build/docs/${category}/${filename}.md"></zero-md>`;
         }
-      }
     </script>
     <title>Docs | Game Reviews API</title>
   </head>
-  <body>
-    <header>
-      <h1 class="title" style="text-align: center;"><a href="/">Game Reviews API</a></h1>
-    </header>
-    <main>
-      <nav>
+  <body style="flex-direction: row; justify-content: space-between">
+      <nav id="web-sidebar">
         <h2><a href="/docs">DOCS</a></h2>
         <h3>/API ENDPOINTS</h3>
         <ul>
@@ -49,10 +39,14 @@
           <li><a onclick="changeMarkdown('get-review-by-id', 'reviews')"><p class="bold">GET</p><p>/reviews/:review_id</p></a></li>
           <li><a onclick="changeMarkdown('patch-review', 'reviews')"><p class="bold">PATCH</p><p>/reviews/:review_id</p></a></li>
           <li><a onclick="changeMarkdown('get-comments-by-reviewid', 'reviews')"><p class="bold">GET</p><p>/reviews/:review_id/comments</p></a></li>
-          <li><a onclick="changeMarkdown('post-comment', 'reviews')"><p class="bold">POST</p><p>/reviews/:review_id/comments</p></a></li>
+          <li style="margin-bottom: 2rem;"><a onclick="changeMarkdown('post-comment', 'reviews')"><p class="bold">POST</p><p>/reviews/:review_id/comments</p></a></li>
         </ul>
       </nav>
-      <article id="markdown-container"><zero-md src="build/docs/home.md"></zero-md></article>
-    </main>
+      <div id="main-page">
+      <header id ="docs-header">
+        <h1 id="docs-title"><a href="/">Game Reviews API</a></h1>
+      </header>
+      <article id="markdown-container"><zero-md src="build/docs/home.md" style="padding-top: 3rem"></zero-md></article>
+    </div>
   </body>
 </html>
