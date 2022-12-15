@@ -1,6 +1,6 @@
 # GET /api/categories/:slug
 
-Returns the requested board game category. The category has keys of "slug" and "description".
+Returns the requested board game category.
 
 ## Examples
 

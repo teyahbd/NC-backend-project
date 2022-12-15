@@ -4,155 +4,55 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="build/css/styles.css" />
+    <link rel="stylesheet" href="build/assets/css/newstyles.css" />
     <link
       rel="icon"
       href="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/240/microsoft/319/game-die_1f3b2.png"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
     />
     <script src="https://cdn.jsdelivr.net/npm/@webcomponents/webcomponentsjs@2/webcomponents-loader.min.js"></script>
     <script
       type="module"
       src="https://cdn.jsdelivr.net/gh/zerodevx/zero-md@1/src/zero-md.min.js"
     ></script>
+    <script src="../assets/js/script.js" ></script>
+    </script>
     <script type="text/javascript">
       function changeMarkdown(filename, category) {
         if (filename === "home") {
           document.getElementById(
-            "testing"
+            "markdown-container"
           ).innerHTML = `<zero-md id="test" src="build/docs/home.md"></zero-md>`;
-          document.getElementById("breadcrumb").innerHTML = `<li>Home</li>`;
-        } else if (filename === category) {
-          document.getElementById(
-            "testing"
-          ).innerHTML = `<zero-md id="test" src="build/docs/${category}/${filename}.md"></zero-md>`;
-          document.getElementById(
-            "breadcrumb"
-          ).innerHTML = `<li><a href="/docs">Home</a></li>
-            <li>${category}</li>`;
         } else {
           document.getElementById(
-            "testing"
+            "markdown-container"
           ).innerHTML = `<zero-md id="test" src="build/docs/${category}/${filename}.md"></zero-md>`;
-          document.getElementById(
-            "breadcrumb"
-          ).innerHTML = `<li><a href="/docs">Home</a></li>
-            <li><a onclick="changeMarkdown('${category}', '${category}')">${category}</a></li><li>${filename}</li>`;
-          document.getElementById(`${filename}`).style.backgroundColor =
-            "white";
-          document.getElementById(`get-categories`).style.backgroundColor =
-            "#8cf5ff";
         }
       }
     </script>
     <title>Docs | Game Reviews API</title>
   </head>
-  <body style="flex-direction: row; background-color: white">
-    <aside id="sidebar">
-      <a id="sidebar-title" onclick="changeMarkdown('home')">
-        <p
-          id="sidebar-title-api"
-          style="font-family: 'Fugaz One', cursive; font-size: 1rem"
-        >
-          Game Reviews API
-        </p>
-        <p id="sidebar-title-docs">DOCS</p>
-      </a>
-      <p
-        style="
-          font-size: 1.7rem;
-          color: white;
-          text-align: center;
-          font-weight: bold;
-          background-color: #eee;
-          padding-top: 0.3rem;
-          padding-bottom: 0.3rem;
-        "
-      >
-        API Endpoints
-      </p>
-
-      <ul style="list-style-type: none; padding: 0; margin: 0">
-        <li class="sidebar-dropdown">
-          <p>GET</p>
-          <a onclick="changeMarkdown('get-api', 'general')">/api</a>
-        </li>
-        <li><h3>CATEGORIES</h3></li>
-        <li><p>GET</p></li>
-        <li id="get-categories" class="sidebar-dropdown">
-          <a onclick="changeMarkdown('get-categories', 'categories')"
-            >/api/categories</a
-          >
-        </li>
-        <li class="sidebar-dropdown">
-          <a onclick="changeMarkdown('get-category-by-slug', 'categories')"
-            >/api/categories/:slug</a
-          >
-        </li>
-        <li><h3>COMMENTS</h3></li>
-        <li><p>GET</p></li>
-        <li class="sidebar-dropdown">
-          <a onclick="changeMarkdown('get-comment-by-commentid', 'comments')"
-            >/api/comment/:comment_id</a
-          >
-        </li>
-        <li><p>DELETE</p></li>
-        <li class="sidebar-dropdown">
-          <a onclick="changeMarkdown('delete-comments', 'comments')"
-            >/api/comment/:comment_id</a
-          >
-        </li>
-      </ul>
-
-      <h3>COMMENTS</h3>
-      <ul style="list-style-type: none; padding: 0; margin: 0">
-        <li id="get-comments" class="sidebar-dropdown">
-          <a onclick="changeMarkdown('get-comments-by-reviewid', 'comments')"
-            >GET comment by review id</a
-          >
-        </li>
-
-        <li class="sidebar-dropdown">
-          <a onclick="changeMarkdown('post-comment', 'comments')"
-            >POST comment by review id</a
-          >
-        </li>
-      </ul>
-      <h3>REVIEWS</h3>
-      <ul style="list-style-type: none; padding: 0; margin: 0">
-        <li class="sidebar-dropdown">
-          <a onclick="changeMarkdown('get-reviews', 'reviews')">GET /reviews</a>
-        </li>
-        <li class="sidebar-dropdown">
-          <a onclick="changeMarkdown('get-review-by-id', 'reviews')"
-            >GET /reviews/:review_id</a
-          >
-        </li>
-        <li class="sidebar-dropdown">
-          <a onclick="changeMarkdown('patch-review', 'reviews')"
-            >PATCH /reviews/:review_id/comments</a
-          >
-        </li>
-      </ul>
-      <h3>USERS</h3>
-      <ul style="list-style-type: none; padding: 0; margin: 0">
-        <li class="sidebar-dropdown">
-          <a onclick="changeMarkdown('get-users', 'users')">GET /users</a>
-        </li>
-      </ul>
-    </aside>
-    <div id="docs-page">
-      <main>
-        <ul id="breadcrumb" class="breadcrumb">
-          <li>Home</li>
+  <body>
+    <header>
+      <h1 id="page-title"><a href="/">Game Reviews API</a></h1>
+    </header>
+    <main>
+      <nav>
+        <h2><a href="/docs">DOCS</a></h2>
+        <h3>/API ENDPOINTS</h3>
+        <ul>
+          <li><a onclick="changeMarkdown('get-api', 'general')"><p class="bold">GET</p><p>/</p></a></li>
+          <li><a onclick="changeMarkdown('get-categories', 'categories')"><p class="bold">GET</p><p>/categories</p></a></li>
+          <li><a onclick="changeMarkdown('get-category-by-slug', 'categories')"><p class="bold">GET</p><p>/categories/:slug</p></a></li>
+          <li><a onclick="changeMarkdown('get-comment-by-commentid', 'comments')"><p class="bold">GET</p><p>/comments/:comment_id</p></a></li>
+          <li><a onclick="changeMarkdown('delete-comment', 'comments')"><p class="bold">DELETE</p><p>/comments/:comment_id</p></a></li>
+          <li><a onclick="changeMarkdown('get-reviews', 'reviews')"><p class="bold">GET</p><p>/reviews</p></a></li>
+          <li><a onclick="changeMarkdown('get-review-by-id', 'reviews')"><p class="bold">GET</p><p>/reviews/:review_id</p></a></li>
+          <li><a onclick="changeMarkdown('patch-review', 'reviews')"><p class="bold">PATCH</p><p>/reviews/:review_id</p></a></li>
+          <li><a onclick="changeMarkdown('get-comments-by-reviewid', 'reviews')"><p class="bold">GET</p><p>/reviews/:review_id/comments</p></a></li>
+          <li><a onclick="changeMarkdown('post-comment', 'reviews')"><p class="bold">POST</p><p>/reviews/:review_id/comments</p></a></li>
         </ul>
-        <div id="testing">
-          <zero-md id="test" src="build/docs/home.md"></zero-md>
-        </div>
-      </main>
-    </div>
+      </nav>
+      <article id="markdown-container"><zero-md src="build/docs/home.md"></zero-md></article>
+    </main>
   </body>
 </html>

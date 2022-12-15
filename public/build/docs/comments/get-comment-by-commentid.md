@@ -1,6 +1,6 @@
 # GET /api/comments/:comment_id
 
-Returns the requested comment. The comment has keys of "comment_id", "body", "review_id", "author", "votes" and "created_at".
+Returns the requested comment.
 
 ## Examples
 
