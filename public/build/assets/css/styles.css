@@ -139,10 +139,18 @@ footer {
   max-height: 85px;
 }
 
-#docs-title {
+.docs-title {
   font-family: "Fugaz One", cursive;
   color: white;
   font-size: 3rem;
+}
+
+#docs-title-web {
+  display: inline;
+}
+
+#docs-title-mobile {
+  display: none;
 }
 
 #mobile-docs-title {
@@ -251,11 +259,14 @@ nav > h3 {
 }
 
 @media only screen and (max-width: 850px) {
-  #page-title {
-    display: inline;
-  }
   #sidebar {
     display: none;
+  }
+  #docs-title-web {
+    display: none;
+  }
+  #docs-title-mobile {
+    display: inline;
   }
   zero-md {
     width: 80vw;
