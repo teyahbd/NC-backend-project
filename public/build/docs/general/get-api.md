@@ -2,9 +2,7 @@
 
 Lists all current endpoints on the API and some additional details (where relevant). Possible details include a description, accepted queries list and an example response.
 
-## Examples
-
-### Response
+## Example Response
 
 ```
 {

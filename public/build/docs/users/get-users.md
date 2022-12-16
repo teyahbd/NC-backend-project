@@ -1,10 +1,8 @@
 # GET /api/users
 
-Lists all current users in the database. Each user has keys of "username", "name", "avatar_url" and "vote_increments".
+Lists all current users in the database.
 
-## Examples
-
-### Response
+## Example Response
 
 ```
 {

@@ -1,10 +1,8 @@
 # GET /api/categories
 
-Lists all current board game categories. Each category has keys of "slug" and "description".
+Lists all current board game categories.
 
-## Examples
-
-### Response
+## Example Response
 
 ```
 {

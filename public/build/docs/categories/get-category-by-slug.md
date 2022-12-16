@@ -2,9 +2,7 @@
 
 Returns the requested board game category.
 
-## Examples
-
-### Response
+## Example Response
 
 ```
 

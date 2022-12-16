@@ -2,13 +2,16 @@
 
 Creates a new comment for the given review.
 
-## Examples
+## Example Request
 
-### Request
+```
+{
+  "username": "cooljmessy",
+  "body": "I really love this game!"
+}
+```
 
-ADD
-
-### Response
+## Example Response
 
 ```
 {
@@ -17,7 +20,7 @@ ADD
           "body": "I really love this game!",
           "review_id": 1,
           "author": "cooljmessy",
-          "votes": 17,
+          "votes": 0,
           "created_at": "2021-03-27T14:15:38.110Z"
         }
       }

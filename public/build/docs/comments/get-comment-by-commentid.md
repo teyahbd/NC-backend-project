@@ -2,9 +2,7 @@
 
 Returns the requested comment.
 
-## Examples
-
-### Response
+## Example Response
 
 ```
 {

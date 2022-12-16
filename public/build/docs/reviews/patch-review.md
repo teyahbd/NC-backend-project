@@ -1,14 +1,16 @@
 # PATCH /api/reviews/:review_id
 
-Updates the given review with keys from the request body.
+Updates the given review with keys from the request body. Currently the only accepted key is to increase or decrease the review's votes.
 
-## Examples
+## Example Request
 
-### Request
+```
+{
+  "inc_votes": 1
+}
+```
 
-CHECK THIS
-
-### Response
+## Example Response
 
 ```
 {

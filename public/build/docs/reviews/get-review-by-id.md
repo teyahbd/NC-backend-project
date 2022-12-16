@@ -2,9 +2,7 @@
 
 Returns the requested review.
 
-## Examples
-
-### Response
+## Example Response
 
 ```
 {

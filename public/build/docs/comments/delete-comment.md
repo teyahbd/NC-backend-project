@@ -2,9 +2,7 @@
 
 Deletes the requested comment.
 
-## Examples
-
-### Response
+## Example Response
 
 Status 204 - No Content
 

@@ -1,10 +1,16 @@
 # GET /api/reviews
 
-Lists all current reviews.
+Lists all current reviews. By default, these reviews are sorted by date in descending order.
 
-## Examples
+## Queries
 
-### Response
+This endpoint currently accepts queries of
+
+- `category` (filters reviews by category specified in the query - if omitted, returns all reviews)
+- `sort_by` (sorts articles by any valid property - defaults to date)
+- `order` (can be set to either `asc` or `desc` for an ascending or descending sort - defaults to descending)
+
+## Example Response
 
 ```
         "reviews": [

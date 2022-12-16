@@ -1,10 +1,8 @@
 # GET /api/reviews/:review_id/comments
 
-Lists all comments for the given review.
+Lists all comments for the given review - returns the most recent comments first.
 
-## Examples
-
-### Response
+## Example Response
 
 ```
 {
