@@ -36,7 +36,7 @@ You can clone this repo locally using the command:
 git clone https://github.com/teyahbd/nc-games-reviews-api.git
 ```
 
-## 2. Install dependences
+### 2. Install dependences
 
 Navigate into the main folder of this repo and install the necessary dependencies using the command:
 
@@ -44,7 +44,7 @@ Navigate into the main folder of this repo and install the necessary dependencie
 npm install
 ```
 
-## 3. Create local .env files
+### 3. Create local .env files
 
 In order to connect to the test and development databases locally, you will need to create a `.env` file for each database containing the appropriate environment variable.
 
@@ -62,7 +62,7 @@ PGDATABASE=nc_games
 
 Ensure these new `.env` files are included in your `.gitignore` file.
 
-## 4. Create and seed your local database
+### 4. Create and seed your local database
 
 This API uses a PSQL database to store and update information. To create this database locally, run the setup script with the command:
 
@@ -78,7 +78,7 @@ npm run seed
 
 Now you're ready to use the API!
 
-## 5. Run the server locally
+### 5. Run the server locally
 
 To run the server with the development data, use the command:
 
