@@ -2,7 +2,7 @@
 
 This API was created as a solo project for the backend section of the Northcoders software development bootcamp. The repo contains an Express REST API that interacts with a PostgreSQL database to form the backend of a board game review site built in React.
 
-The API has also has a [frontend interface](https://nc-games-reviews.onrender.com/) written with HTML, CSS and JavaScript - the landing page contains an "About" section which links to both the API as well as a [Docs](https://nc-games-reviews.onrender.com/docs) section. This section contains a list of all possible endpoints on the API with details about the responses and request format (where relevant).
+The API has also has a [frontend interface](https://nc-games-reviews.onrender.com/) written with HTML, CSS, Markdown and JavaScript - the landing page contains an "About" section which links to both the API as well as a [Docs](https://nc-games-reviews.onrender.com/docs) section. This section contains a list of all possible endpoints on the API with details about the responses and request format (where relevant).
 
 ## Quick Links 
 - [Hosted API] (https://nc-games-reviews.onrender.com/)
