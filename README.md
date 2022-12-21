@@ -1,8 +1,13 @@
 # Game Reviews API
 
-This API was created as a solo project for the backend section of the Northcoders software development bootcamp. The repo contains an Express REST API that interacts with a PostgreSQL database to form the backend of a board game review site built in React. The hosted API contained within this repo can be found [here](https://nc-games-reviews.onrender.com/). 
+This API was created as a solo project for the backend section of the Northcoders software development bootcamp. The repo contains an Express REST API that interacts with a PostgreSQL database to form the backend of a [board game review site](https://nc-board-game-reviews.netlify.app/) built in React.
 
-The API has also has a frontend interface - the landing page contains an "About" section which links to both the API as well as a [Docs](https://nc-games-reviews.onrender.com/docs) section. This section contains a list of all possible endpoints on the API with details about the responses and request format (where relevant). The repo for the frontend part of this project can be found [here](https://github.com/teyahbd/nc-games-reviews).
+The API has also has a [frontend interface](https://nc-games-reviews.onrender.com/) written with HTML, CSS, Markdown and JavaScript - the landing page contains an "About" section which links to both the API as well as a [Docs](https://nc-games-reviews.onrender.com/docs) section. This section contains a list of all possible endpoints on the API with details about the responses and request format (where relevant).
+
+## Quick Links 
+- [Hosted API](https://nc-games-reviews.onrender.com/)
+- [Hosted Frontend React Site](https://nc-board-game-reviews.netlify.app/)
+- [Frontend Repo](https://github.com/teyahbd/nc-games-reviews)
 
 ## Built With
 
@@ -32,7 +37,7 @@ You can clone this repo locally using the command:
 git clone https://github.com/teyahbd/nc-games-reviews-api.git
 ```
 
-## 2. Install dependences
+### 2. Install dependences
 
 Navigate into the main folder of this repo and install the necessary dependencies using the command:
 
@@ -40,7 +45,7 @@ Navigate into the main folder of this repo and install the necessary dependencie
 npm install
 ```
 
-## 3. Create local .env files
+### 3. Create local .env files
 
 In order to connect to the test and development databases locally, you will need to create a `.env` file for each database containing the appropriate environment variable.
 
@@ -58,7 +63,7 @@ PGDATABASE=nc_games
 
 Ensure these new `.env` files are included in your `.gitignore` file.
 
-## 4. Create and seed your local database
+### 4. Create and seed your local database
 
 This API uses a PSQL database to store and update information. To create this database locally, run the setup script with the command:
 
@@ -74,7 +79,7 @@ npm run seed
 
 Now you're ready to use the API!
 
-## 5. Run the server locally
+### 5. Run the server locally
 
 To run the server with the development data, use the command:
 
