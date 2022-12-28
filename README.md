@@ -4,7 +4,8 @@ This API was created as a solo project for the backend section of the Northcoder
 
 The API has also has a [frontend interface](https://nc-games-reviews.onrender.com/) written with HTML, CSS, Markdown and JavaScript - the landing page contains an "About" section which links to both the API as well as a [Docs](https://nc-games-reviews.onrender.com/docs) section. This section contains a list of all possible endpoints on the API with details about the responses and request format (where relevant).
 
-## Quick Links 
+## Quick Links
+
 - [Hosted API](https://nc-games-reviews.onrender.com/)
 - [Hosted Frontend React Site](https://nc-board-game-reviews.netlify.app/)
 - [Frontend Repo](https://github.com/teyahbd/nc-games-reviews)
@@ -90,6 +91,12 @@ npm start
 to locally host your own version of the API. The API is set up to run on PORT 9090. You can now interact with the API while the server is running using software such as `Insomnia`.
 
 ## API Usage
+
+<div align="center">
+  <img src="img/about-screenshot.jpg" alt="Web about page screenshot" height="150">
+  <img src="img/docs-screenshot.jpg" alt="Web docs screenshot" height="150">
+  <img src="img/mobile-screenshot.png" alt="mobile docs screenshot" height="150">
+</div>
 
 The [hosted version](https://nc-games-reviews.onrender.com/) of this API contains a docs section which includes details of all current endpoints used in this API. The docs for this API can be found [here](https://nc-games-reviews.onrender.com/docs). At this time, interacting with the API does not require authentication.
 
