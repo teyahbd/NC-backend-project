@@ -93,9 +93,9 @@ to locally host your own version of the API. The API is set up to run on PORT 90
 ## API Usage
 
 <div align="center">
-  <img src="img/about-screenshot.jpg" alt="Web about page screenshot" height="150">
-  <img src="img/docs-screenshot.jpg" alt="Web docs screenshot" height="150">
-  <img src="img/mobile-screenshot.png" alt="mobile docs screenshot" height="150">
+  <img src="img/about-screenshot.jpg" alt="Web about page screenshot" height="250">
+  <img src="img/docs-screenshot.jpg" alt="Web docs screenshot" height="250">
+  <img src="img/mobile-screenshot.png" alt="mobile docs screenshot" height="250">
 </div>
 
 The [hosted version](https://nc-games-reviews.onrender.com/) of this API contains a docs section which includes details of all current endpoints used in this API. The docs for this API can be found [here](https://nc-games-reviews.onrender.com/docs). At this time, interacting with the API does not require authentication.
